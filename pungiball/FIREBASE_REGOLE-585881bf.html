@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PunchBall — Regole Firebase RTDB</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0b0d1a;color:#eef1ff;font-family:'Segoe UI',system-ui,sans-serif;padding:24px 16px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{color:#ffc531;font-size:1.4rem;margin-bottom:6px}
+  .sub{color:#8b93b8;font-size:.85rem;margin-bottom:20px}
+  .card{background:#141830;border:1px solid #2a3160;border-radius:14px;padding:18px;margin-bottom:16px}
+  .card h2{font-size:1rem;color:#ffc531;margin-bottom:8px}
+  .card p{color:#aab2d8;font-size:.85rem;line-height:1.5;margin-bottom:8px}
+  pre{background:#0b0d1a;border:1px solid #2a3160;border-radius:10px;padding:14px;overflow-x:auto;
+      font-size:.72rem;line-height:1.45;color:#c8ffb0;white-space:pre}
+  .tag{display:inline-block;background:#1d3a2a;color:#6fe39a;border-radius:6px;
+       padding:1px 8px;font-size:.7rem;font-weight:700;margin-left:6px}
+  .warn{background:#3a1d24;border-color:#7a2a3a}
+  .warn h2{color:#ff5470}
+  code{color:#ffc531}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🔥 Regole Firebase — Realtime Database</h1>
+  <p class="sub">PunchBall · da incollare in Firebase Console → Realtime Database → Regole → Pubblica.<br>
+  <b>Effetto immediato</b>: niente rebuild, il gioco le usa subito.</p>
+
+  <div class="card">
+    <h2>📋 Regole complete (copia tutto)</h2>
+    <button onclick="copia()" style="background:#ffc531;border:none;border-radius:8px;padding:8px 16px;
+        font-weight:800;cursor:pointer;margin-bottom:10px">📄 COPIA TUTTO</button>
+    <span id="ok" style="color:#6fe39a;font-size:.8rem;display:none">✓ copiato!</span>
+<pre id="regole">{
+  "rules": {
+    "supportMessages": {
+      "$uid": {
+        ".write": "auth != null &amp;&amp; auth.uid == $uid",
+        ".read": false,
+        "$msg": {
+          ".validate": "newData.hasChildren(['email','motivo','testo']) &amp;&amp; newData.child('email').isString() &amp;&amp; newData.child('email').val().length &lt;= 100 &amp;&amp; newData.child('motivo').isString() &amp;&amp; newData.child('motivo').val().length &lt;= 50 &amp;&amp; newData.child('testo').isString() &amp;&amp; newData.child('testo').val().length &gt; 0 &amp;&amp; newData.child('testo').val().length &lt;= 2000 &amp;&amp; !data.exists()"
+        }
+      }
+    },
+    "leaderboard": {
+      ".read": "auth != null",
+      ".indexOn": ["p"],
+      "$uid": {
+        ".write": "auth != null &amp;&amp; auth.uid == $uid",
+        ".validate": "newData.hasChildren(['n','p','w','l']) &amp;&amp; newData.child('n').isString() &amp;&amp; newData.child('n').val().length &lt;= 30 &amp;&amp; newData.child('p').isNumber() &amp;&amp; newData.child('p').val() &gt;= 0 &amp;&amp; newData.child('p').val() &lt;= 999999 &amp;&amp; newData.child('w').isNumber() &amp;&amp; newData.child('w').val() &gt;= 0 &amp;&amp; newData.child('w').val() &lt;= 99999 &amp;&amp; newData.child('l').isNumber() &amp;&amp; newData.child('l').val() &gt;= 0 &amp;&amp; newData.child('l').val() &lt;= 99999 &amp;&amp; (!newData.hasChild('av') || newData.child('av').isNumber()) &amp;&amp; (!newData.hasChild('avv') || newData.child('avv').isNumber())"
+      }
+    },
+    "premiLeader": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "users": {
+      "$uid": {
+        ".read": "auth != null &amp;&amp; auth.uid == $uid",
+        ".write": "auth != null &amp;&amp; auth.uid == $uid",
+        ".validate": "(!newData.hasChild('name') || (newData.child('name').isString() &amp;&amp; newData.child('name').val().length &lt;= 30)) &amp;&amp; (!newData.hasChild('liv') || (newData.child('liv').isNumber() &amp;&amp; newData.child('liv').val() &gt;= 1 &amp;&amp; newData.child('liv').val() &lt;= 999)) &amp;&amp; (!newData.hasChild('exp') || (newData.child('exp').isNumber() &amp;&amp; newData.child('exp').val() &gt;= 0 &amp;&amp; newData.child('exp').val() &lt;= 9999999)) &amp;&amp; (!newData.hasChild('monete') || (newData.child('monete').isNumber() &amp;&amp; newData.child('monete').val() &gt;= 0 &amp;&amp; newData.child('monete').val() &lt;= 999999)) &amp;&amp; (!newData.hasChild('rankPoints') || (newData.child('rankPoints').isNumber() &amp;&amp; newData.child('rankPoints').val() &gt;= 0 &amp;&amp; newData.child('rankPoints').val() &lt;= 999999)) &amp;&amp; (!newData.hasChild('avatar') || newData.child('avatar').isNumber()) &amp;&amp; (!newData.hasChild('avatarVip') || newData.child('avatarVip').isNumber()) &amp;&amp; (!newData.hasChild('char') || (newData.child('char').isNumber() &amp;&amp; newData.child('char').val() &gt;= 0 &amp;&amp; newData.child('char').val() &lt;= 99)) &amp;&amp; (!newData.hasChild('starter') || newData.child('starter').isString()) &amp;&amp; (!newData.hasChild('tutorial') || newData.child('tutorial').isNumber()) &amp;&amp; (!newData.hasChild('rewardNext') || newData.child('rewardNext').isString()) &amp;&amp; (!newData.hasChild('lingua') || (newData.child('lingua').isString() &amp;&amp; newData.child('lingua').val().length &lt;= 10)) &amp;&amp; (!newData.hasChild('migliore') || (newData.child('migliore').isNumber() &amp;&amp; newData.child('migliore').val() &gt;= 0 &amp;&amp; newData.child('migliore').val() &lt;= 6000))"
+      }
+    },
+    "system": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    ".read": false,
+    ".write": false
+  }
+}</pre>
+  </div>
+
+  <div class="card">
+    <h2>🗂 Struttura dati (cosa scrive il gioco)</h2>
+    <p><code>users/{uid}</code><span class="tag">privato</span> — progressione: name, liv, exp, monete, rankPoints, migliore, char, avatar, starter, tutorial, rewardNext, lingua, char_*</p>
+    <p><code>leaderboard/{uid}</code><span class="tag">pubblica lettura</span> — classifica: <code>n</code> nome, <code>p</code> punti rank, <code>w</code> vinte, <code>l</code> perse, <code>av</code>/<code>avv</code> avatar. Il gioco fa la query Top 20 con <code>orderBy p</code> (per questo serve <code>.indexOn</code>).</p>
+    <p><code>premiLeader</code><span class="tag">solo console</span> — premi stagione: <code>p1</code> <code>p2</code> <code>p3</code> <code>p4_10</code> <code>p11_20</code> (numeri). Li scrivi TU a mano da Firebase Console, il gioco li legge.</p>
+    <p><code>supportMessages/{uid}/{msgId}</code><span class="tag">solo scrittura</span> — messaggi al supporto: email, motivo, testo.</p>
+    <p><code>system</code><span class="tag">lettura</span> — annunci/messaggi di sistema: li gestisci da console.</p>
+    <p>Tutto il resto: <b>negato</b> (deny-all di default).</p>
+  </div>
+
+  <div class="card warn">
+    <h2>⚠️ Regole rapide</h2>
+    <p>• Cambi le regole → premi <b>Pubblica</b> → attive in ~5 secondi, niente rebuild.</p>
+    <p>• <code>lb: HTTP_401</code> in Console = regole non pubblicate o path sbagliato.</p>
+    <p>• Per editare i premi: Console → Dati → crea <code>premiLeader</code> → figli <code>p1</code>=5000, <code>p2</code>=3000, <code>p3</code>=2000, <code>p4_10</code>=1000, <code>p11_20</code>=500.</p>
+    <p>• Gli ospiti (non loggati) NON leggono/scrivono niente sul cloud: i dati restano locali.</p>
+  </div>
+</div>
+<script>
+function copia(){
+  const t=document.getElementById('regole').innerText;
+  navigator.clipboard.writeText(t).then(()=>{document.getElementById('ok').style.display='inline'});
+}
+</script>
+</body>
+</html>

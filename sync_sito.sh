@@ -27,6 +27,7 @@ lock() {
 
 lock BETA_CHECKLIST.html "Checklist"
 lock IDEE.html "Bacheca Idee"
+lock FIREBASE_REGOLE.html "Regole Firebase"
 
 cd "C:/Users/icelil/site"
 git add -A && git commit -qm "sync sito $(date +%Y-%m-%d)" && git push -q
