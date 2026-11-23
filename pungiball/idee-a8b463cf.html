@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PunchBall — Bacheca Idee</title>
+<style>
+  :root{
+    --bg:#0b0d1a; --card:#141830; --card2:#1a1f3d; --line:#2a3160;
+    --oro:#ffc531; --oro2:#ff9d00; --txt:#eef1ff; --mut:#8b93b8;
+    --ok:#37d67a; --bad:#ff5470;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:radial-gradient(1200px 600px at 50% -10%,#1b2145 0%,var(--bg) 55%);
+       color:var(--txt);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+  header{position:sticky;top:0;z-index:9;background:rgba(11,13,26,.92);backdrop-filter:blur(10px);
+         border-bottom:2px solid var(--oro);padding:14px 18px}
+  .top{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  h1{font-size:1.35rem;letter-spacing:.5px}
+  h1 b{color:var(--oro)}
+  .spacer{flex:1}
+  .btn{background:linear-gradient(180deg,var(--oro),var(--oro2));border:none;border-radius:10px;
+       color:#201400;font-weight:700;padding:9px 16px;font-size:.9rem;cursor:pointer;
+       box-shadow:0 3px 0 #8a5a00;transition:transform .1s}
+  .btn:active{transform:translateY(2px);box-shadow:0 1px 0 #8a5a00}
+  .btn.ghost{background:var(--card2);color:var(--txt);box-shadow:0 3px 0 #0a0c1c;border:1px solid var(--line)}
+  .btn.ghost:active{box-shadow:0 1px 0 #0a0c1c}
+  nav{max-width:1200px;margin:10px auto 0;display:flex;gap:8px;flex-wrap:wrap}
+  .chip{background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:999px;
+        padding:6px 14px;font-size:.8rem;cursor:pointer;font-weight:600;transition:.15s}
+  .chip.on{background:var(--oro);color:#1a1000;border-color:var(--oro)}
+  main{max-width:1200px;margin:22px auto 60px;padding:0 16px}
+  .grid{columns:3 300px;column-gap:16px}
+  @media(max-width:640px){.grid{columns:1}}
+  .card{break-inside:avoid;background:linear-gradient(180deg,var(--card),var(--card2));
+        border:1px solid var(--line);border-radius:16px;margin-bottom:16px;overflow:hidden;
+        box-shadow:0 6px 20px rgba(0,0,0,.35)}
+  .card img{width:100%;display:block;max-height:280px;object-fit:cover;cursor:pointer}
+  .card .body{padding:14px 16px}
+  .card h3{font-size:1.02rem;margin-bottom:6px;color:var(--oro);outline:none}
+  .card p{font-size:.88rem;color:var(--txt);line-height:1.45;white-space:pre-wrap;outline:none;
+          min-height:1.2em}
+  .card p:empty::before{content:'Scrivi qui…';color:var(--mut);font-style:italic}
+  .card .foot{display:flex;align-items:center;gap:8px;padding:0 16px 12px}
+  .tag{font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+       padding:4px 10px;border-radius:999px}
+  .date{font-size:.7rem;color:var(--mut);margin-left:auto}
+  .tools{display:flex;gap:6px}
+  .tools button{background:none;border:1px solid var(--line);border-radius:8px;color:var(--mut);
+                font-size:.8rem;padding:4px 8px;cursor:pointer}
+  .tools button:hover{color:var(--txt);border-color:var(--mut)}
+  .empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--mut)}
+  .empty .big{font-size:3rem;margin-bottom:10px}
+  /* modal */
+  .modal{position:fixed;inset:0;background:rgba(4,6,15,.8);backdrop-filter:blur(6px);
+         display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+  .modal.open{display:flex}
+  .mbox{background:var(--card);border:1px solid var(--oro);border-radius:18px;width:100%;
+        max-width:480px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+  .mbox h2{color:var(--oro);font-size:1.1rem;margin-bottom:14px}
+  .fld{margin-bottom:12px}
+  .fld label{display:block;font-size:.72rem;font-weight:700;color:var(--mut);
+             text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+  .fld input[type=text],.fld textarea,.fld select{width:100%;background:var(--bg);
+        border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px 12px;
+        font-size:.95rem;font-family:inherit}
+  .fld textarea{min-height:110px;resize:vertical}
+  .fld input:focus,.fld textarea:focus,.fld select:focus{border-color:var(--oro);outline:none}
+  .drop{border:2px dashed var(--line);border-radius:12px;padding:18px;text-align:center;
+        color:var(--mut);font-size:.85rem;cursor:pointer;transition:.15s}
+  .drop:hover{border-color:var(--oro);color:var(--oro)}
+  .drop img{max-width:100%;max-height:160px;border-radius:8px;margin-top:8px}
+  .row{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+  .hint{font-size:.72rem;color:var(--mut);margin-top:10px;text-align:center}
+  #imgPick{display:none}
+  .viewer{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;
+          justify-content:center;z-index:30;cursor:zoom-out}
+  .viewer img{max-width:94vw;max-height:94vh;border-radius:8px}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--card2);
+         border:1px solid var(--oro);color:var(--txt);padding:10px 20px;border-radius:999px;
+         font-size:.85rem;display:none;z-index:40}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1>🥊 <b>PUNCHBALL</b> · Bacheca Idee</h1>
+    <div class="spacer"></div>
+    <button class="btn ghost" onclick="expJson()">⇩ Esporta</button>
+    <button class="btn ghost" onclick="impJson()">⇧ Importa</button>
+    <button class="btn" onclick="openModal()">＋ Nuova idea</button>
+  </div>
+  <nav id="chips"></nav>
+</header>
+
+<main><div class="grid" id="grid"></div></main>
+
+<!-- modal nuova/modifica idea -->
+<div class="modal" id="modal">
+  <div class="mbox">
+    <h2 id="mTitle">Nuova idea</h2>
+    <div class="fld"><label>Titolo</label><input type="text" id="fTitle" maxlength="80" placeholder="Es. Ruota della fortuna"></div>
+    <div class="fld"><label>Sezione</label><select id="fCat"></select></div>
+    <div class="fld"><label>Testo / appunti</label><textarea id="fText" placeholder="Scrivi l'idea, dettagli, come funzionerebbe…"></textarea></div>
+    <div class="fld"><label>Immagine (opzionale)</label>
+      <div class="drop" id="drop" onclick="document.getElementById('imgPick').click()">
+        📷 Tocca per aggiungere un'immagine<div id="prev"></div>
+      </div>
+    </div>
+    <input type="file" id="imgPick" accept="image/*">
+    <div class="row">
+      <button class="btn ghost" onclick="closeModal()">Annulla</button>
+      <button class="btn" onclick="salva()">Salva</button>
+    </div>
+    <div class="hint">💾 Tutto si salva in automatico in QUESTO dispositivo.<br>Per passare le idee PC ↔ telefono: Esporta su uno → Importa sull'altro.</div>
+  </div>
+</div>
+
+<div class="viewer" id="viewer" onclick="this.style.display='none'"><img id="vImg"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY='pb_idee_v1';
+const CATS=[
+  {id:'gameplay', n:'Gameplay',      c:'#4da3ff'},
+  {id:'personaggi',n:'Personaggi',   c:'#ff8f4d'},
+  {id:'eventi',   n:'Eventi/Torneo', c:'#c86bff'},
+  {id:'ui',       n:'Grafica & UI',  c:'#37d67a'},
+  {id:'audio',    n:'Audio',         c:'#ffd24d'},
+  {id:'soldi',    n:'Monetizzazione',c:'#ff5470'},
+  {id:'varie',    n:'Varie',         c:'#8b93b8'},
+];
+let idee = JSON.parse(localStorage.getItem(KEY)||'[]');
+let editId=null, imgData='', filtro='tutte';
+
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+function cat(id){return CATS.find(c=>c.id===id)||CATS[6]}
+function save(){localStorage.setItem(KEY,JSON.stringify(idee))}
+function toast(t){const x=$('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',2200)}
+
+function chips(){
+  const counts={tutte:idee.length};
+  idee.forEach(i=>counts[i.cat]=(counts[i.cat]||0)+1);
+  $('chips').innerHTML=[{id:'tutte',n:'Tutte'}].concat(CATS).map(c=>
+    `<span class="chip ${filtro===c.id?'on':''}" onclick="setF('${c.id}')">${c.n} ${counts[c.id]?'· '+counts[c.id]:''}</span>`).join('');
+  $('fCat').innerHTML=CATS.map(c=>`<option value="${c.id}">${c.n}</option>`).join('');
+}
+function setF(f){filtro=f;render()}
+
+function render(){
+  chips();
+  const list=idee.filter(i=>filtro==='tutte'||i.cat===filtro);
+  if(!list.length){
+    $('grid').innerHTML=`<div class="empty"><div class="big">💡</div>
+      Nessuna idea ${filtro==='tutte'?'ancora':'in questa sezione'}<br><br>
+      Tocca <b>＋ Nuova idea</b> e scrivi quello che ti viene in mente</div>`;
+    return;
+  }
+  $('grid').innerHTML=list.map(i=>`
+    <div class="card">
+      ${i.img?`<img src="${i.img}" onclick="zoom('${i.id}')">`:''}
+      <div class="body">
+        <h3 contenteditable spellcheck="false" onblur="updT('${i.id}',this.innerText)">${esc(i.titolo)}</h3>
+        <p contenteditable spellcheck="false" onblur="updP('${i.id}',this.innerText)">${esc(i.testo)}</p>
+      </div>
+      <div class="foot">
+        <span class="tag" style="background:${cat(i.cat).c}22;color:${cat(i.cat).c};border:1px solid ${cat(i.cat).c}55">${cat(i.cat).n}</span>
+        <span class="date">${new Date(i.ts).toLocaleDateString('it-IT',{day:'2-digit',month:'short'})}</span>
+        <span class="tools">
+          <button onclick="edita('${i.id}')" title="modifica">✏️</button>
+          <button onclick="togli('${i.id}')" title="elimina">🗑</button>
+        </span>
+      </div>
+    </div>`).join('');
+}
+
+function openModal(i){
+  editId=i||null; imgData='';
+  $('mTitle').textContent=i?'Modifica idea':'Nuova idea';
+  if(i){const x=idee.find(e=>e.id===i);
+    $('fTitle').value=x.titolo;$('fCat').value=x.cat;$('fText').value=x.testo;imgData=x.img||'';
+  }else{$('fTitle').value='';$('fCat').value='gameplay';$('fText').value='';}
+  $('prev').innerHTML=imgData?`<img src="${imgData}">`:'';
+  $('modal').classList.add('open');
+  setTimeout(()=>$('fTitle').focus(),80);
+}
+function closeModal(){$('modal').classList.remove('open')}
+
+function salva(){
+  const t=$('fTitle').value.trim();
+  if(!t){$('fTitle').focus();return toast('Scrivi almeno un titolo')}
+  if(editId){
+    const x=idee.find(e=>e.id===editId);
+    x.titolo=t;x.cat=$('fCat').value;x.testo=$('fText').value;x.img=imgData;
+  }else{
+    idee.unshift({id:Date.now().toString(36),titolo:t,cat:$('fCat').value,
+      testo:$('fText').value,img:imgData,ts:Date.now()});
+  }
+  save();closeModal();render();toast('Idea salvata ✔');
+}
+function edita(id){openModal(id)}
+function togli(id){
+  if(!confirm('Eliminare questa idea?'))return;
+  idee=idee.filter(i=>i.id!==id);save();render();
+}
+function updT(id,v){const x=idee.find(e=>e.id===id);if(x){x.titolo=v.trim();save()}}
+function updP(id,v){const x=idee.find(e=>e.id===id);if(x){x.testo=v;save()}}
+function zoom(id){$('vImg').src=idee.find(e=>e.id===id).img;$('viewer').style.display='flex'}
+
+// immagine -> ridimensiona a max 900px e salva base64 (resta leggera per localStorage)
+$('imgPick').onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=ev=>{
+    const im=new Image();
+    im.onload=()=>{
+      const k=Math.min(1,900/Math.max(im.width,im.height));
+      const c=document.createElement('canvas');
+      c.width=im.width*k;c.height=im.height*k;
+      c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+      imgData=c.toDataURL('image/jpeg',.82);
+      $('prev').innerHTML=`<img src="${imgData}">`;
+    };
+    im.src=ev.target.result;
+  };
+  rd.readAsDataURL(f);
+  e.target.value='';
+};
+
+// export / import per passare le idee tra PC e telefono
+function expJson(){
+  const b=new Blob([JSON.stringify(idee,null,1)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='punchball_idee.json';a.click();toast('Backup scaricato ⇩');
+}
+function impJson(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json';
+  inp.onchange=()=>{
+    const rd=new FileReader();
+    rd.onload=ev=>{
+      try{const d=JSON.parse(ev.target.result);
+        if(!Array.isArray(d))throw 0;
+        idee=d;save();render();toast('Idee importate ✔ '+d.length);
+      }catch(e){toast('File non valido')}
+    };
+    rd.readAsText(inp.files[0]);
+  };
+  inp.click();
+}
+
+render();
+</script>
+</body>
+</html>

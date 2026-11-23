@@ -21,6 +21,7 @@
   button{width:100%;margin-top:12px;background:linear-gradient(180deg,#ffc531,#ff9d00);border:none;
          border-radius:10px;color:#201400;font-weight:800;padding:12px;font-size:1rem;cursor:pointer}
   .err{color:#ff5470;font-size:.8rem;margin-top:12px;display:none}
+  .spin{display:none;margin-top:14px;color:#8b93b8;font-size:.8rem}
   .shake{animation:sh .4s}
   @keyframes sh{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
 </style>
@@ -33,10 +34,9 @@
   <input type="password" id="pw" placeholder="password" autocomplete="off">
   <button onclick="go()">SBLOCCA</button>
   <div class="err" id="err">password sbagliata</div>
+  <div class="spin" id="spin">sblocco…</div>
 </div>
-<script id="blob" type="application/octet-stream">
-__BLOB__
-</script>
+<script id="blob" type="application/octet-stream">__BLOB__</script>
 <script>
 const KEY='pb_gate_pw';
 const $=i=>document.getElementById(i);
@@ -52,13 +52,16 @@ async function dec(pw){
 }
 async function go(){
   const pw=$('pw').value; if(!pw)return;
+  $('spin').style.display='block'; $('err').style.display='none';
   try{
-    const html=await dec(pw);
+    const u=(await dec(pw)).trim();
+    if(!/^[\w\-./]+\.html$/.test(u)) throw 0;
     localStorage.setItem(KEY,pw);
-    document.open();document.write(html);document.close();
+    location.replace(u);                       // pagina vera: script e bottoni funzionano
   }catch(e){
+    $('spin').style.display='none';
     $('err').style.display='block';
-    $('box').classList.remove('shake');void $('box').offsetWidth;$('box').classList.add('shake');
+    $('box').classList.remove('shake');void $('box').offsetWidth;
     $('pw').select();
   }
 }
