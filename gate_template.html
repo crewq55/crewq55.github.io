@@ -16,12 +16,11 @@
   h1 b{color:#ffc531}
   p{color:#8b93b8;font-size:.82rem;margin-bottom:20px}
   input{width:100%;background:#0b0d1a;border:1px solid #2a3160;border-radius:10px;color:#eef1ff;
-        padding:12px 14px;font-size:1rem;text-align:center;letter-spacing:2px}
+        padding:14px;font-size:1.1rem;text-align:center;letter-spacing:2px}
   input:focus{border-color:#ffc531;outline:none}
   button{width:100%;margin-top:12px;background:linear-gradient(180deg,#ffc531,#ff9d00);border:none;
-         border-radius:10px;color:#201400;font-weight:800;padding:12px;font-size:1rem;cursor:pointer}
+         border-radius:10px;color:#201400;font-weight:800;padding:14px;font-size:1rem;cursor:pointer}
   .err{color:#ff5470;font-size:.8rem;margin-top:12px;display:none}
-  .spin{display:none;margin-top:14px;color:#8b93b8;font-size:.8rem}
   .shake{animation:sh .4s}
   @keyframes sh{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
 </style>
@@ -31,16 +30,17 @@
   <div class="lock">🥊🔒</div>
   <h1><b>PUNCHBALL</b> · __TITLE__</h1>
   <p>area riservata — inserisci la password</p>
-  <input type="password" id="pw" placeholder="password" autocomplete="off">
+  <input type="password" id="pw" placeholder="password" autocomplete="off"
+         autocapitalize="none" autocorrect="off" spellcheck="false">
   <button onclick="go()">SBLOCCA</button>
   <div class="err" id="err">password sbagliata</div>
-  <div class="spin" id="spin">sblocco…</div>
 </div>
 <script id="blob" type="application/octet-stream">__BLOB__</script>
 <script>
 const KEY='pb_gate_pw';
 const $=i=>document.getElementById(i);
 $('pw').addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+// decifra il blob AES-256-CBC (PBKDF2/SHA-256, salt OpenSSL) -> restituisce l'URL segreto
 async function dec(pw){
   const raw=Uint8Array.from(atob($('blob').textContent.trim()),c=>c.charCodeAt(0));
   const salt=raw.slice(8,16), ct=raw.slice(16);
@@ -51,17 +51,19 @@ async function dec(pw){
   return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-CBC',iv:kb.slice(32,48)},key,ct));
 }
 async function go(){
-  const pw=$('pw').value; if(!pw)return;
-  $('spin').style.display='block'; $('err').style.display='none';
+  let pw=$('pw').value; if(!pw)return;
+  pw=pw.trim().toLowerCase();   // tollera maiuscole/spazi della tastiera telefono
+  if(!crypto.subtle){$('err').textContent='browser non supportato — prova Chrome';$('err').style.display='block';return}
   try{
-    const u=(await dec(pw)).trim();
-    if(!/^[\w\-./]+\.html$/.test(u)) throw 0;
+    const url=(await dec(pw)).trim();
+    if(!/^[\w.-]+$/.test(url)) throw 0;
     localStorage.setItem(KEY,pw);
-    location.replace(u);                       // pagina vera: script e bottoni funzionano
+    location.replace(url);   // redirect alla pagina vera: script e bottoni funzionano nativi
   }catch(e){
-    $('spin').style.display='none';
+    localStorage.removeItem(KEY);
+    $('err').textContent='password sbagliata';
     $('err').style.display='block';
-    $('box').classList.remove('shake');void $('box').offsetWidth;
+    $('box').classList.remove('shake');void $('box').offsetWidth;$('box').classList.add('shake');
     $('pw').select();
   }
 }
