@@ -241,9 +241,10 @@
       <ul><li>AdMob rewarded (x2 premi, revive, monete gratis)</li><li>Banner/interstitial dove ha senso</li><li>Offline obbligatorio = no ads = no play</li></ul></div>
     <div class="card"><h3>v0.4 — Classifica <span class="badge b-wip">IN CORSO</span></h3>
       <ul><li>UI + sync Firebase fatti ✅</li><li>Distribuzione premi a fine stagione (Cloud Function o manuale)</li><li>Reset stagionale punti + anti-cheat server-side</li></ul></div>
-    <div class="card"><h3>v0.5 — 1v1 Online <span class="badge b-next">OBIETTIVO</span></h3>
-      <ul><li>Match PvP reali sincronizzati (server o RTDB)</li><li>Timer turni identico per entrambi, niente desync</li>
-      <li>Matchmaking per rango + gestione disconnessioni</li><li>Tutto online-first: niente partite offline buggate</li></ul></div>
+    <div class="card"><h3>v0.5 — 1v1 Online <span class="badge b-wip">IN CORSO</span></h3>
+      <ul><li>PvP live via RTDB: coda + stanza + turni reali sincronizzati ✅</li><li>Penalita' timeout: miss=0, turno dopo a 15s rosso "PENALIZZAZIONE" (visibile a entrambi), 2 miss = vittoria a tavolino ✅</li>
+      <li>Resume dopo chiusura app (stato dal server) + abbandono = sconfitta ✅</li>
+      <li>Matchmaking per rango + anti-cheat punteggi lato server</li></ul></div>
     <div class="card"><h3>v0.6+ — Contenuti <span class="badge b-idea">IDEA</span></h3>
       <ul><li>Nuovi personaggi (slot Coming Soon già pronti)</li><li>Nuove macchine/arene e skin</li><li>Eventi a tempo + missioni giornaliere</li></ul></div>
   </div>
@@ -260,7 +261,8 @@
       <li>Evoluzione avatar VIP</li><li>Livello maestria per personaggio</li></ul></div>
     <div class="card"><h3>💡 Social</h3><ul>
       <li>Top 50 settimanale + premi</li><li>Sfida amici (codice sfida)</li>
-      <li>Condividi il record sui social</li><li>Tornei a bracket a tempo</li></ul></div>
+      <li>Condividi il record sui social</li><li>Tornei a bracket a tempo</li>
+      <li><b>Evento asincrono (ghost)</b>: sfidi i colpi registrati di giocatori veri — sempre disponibile anche con pochi utenti (deciso: ranked resta live, questo diventa evento)</li></ul></div>
     <div class="card"><h3>💡 Monetizzazione</h3><ul>
       <li>Rewarded ads: x2 premi, revive, monete</li><li>Battle pass stagionale</li>
       <li>Pacchetto starter scontato</li><li>Rimuovi ads (acquisto unico)</li></ul></div>
@@ -272,7 +274,9 @@
   <div class="card"><h3>Firebase</h3>
     <p>Progetto <code>punchballarcade</code> — RTDB europe-west1. Auth REST (no SDK).<br>
     Struttura: <code>users/{uid}</code> salvataggi · <code>supportMessages/{uid}</code> ticket ·
-    <code>leaderboard/{week}/{uid}</code> futura classifica · <code>system/{id}</code> messaggi.</p></div>
+    <code>leaderboard/{week}/{uid}</code> futura classifica · <code>system/{id}</code> messaggi.<br>
+    PvP: <code>queue/{uid}</code> chi cerca · <code>matchbox/{uid}</code> invito match ·
+    <code>match/{a_b}</code> stanza partita (pa0..2/pb0..2: -1 non tirato, 0 miss, &gt;0 punti).</p></div>
   <div class="card"><h3>Messaggi sistema — formato</h3>
     <p><code>{ titolo, testo, data, ora, tipo, ricompensa, avviso, giorni }</code><br>
     <code>tipo</code>: all / banner / msg · <code>ricompensa</code>: monete RITIRA ·

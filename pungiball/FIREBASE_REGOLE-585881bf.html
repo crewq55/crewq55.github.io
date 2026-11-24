@@ -67,6 +67,25 @@
       ".read": "auth != null",
       ".write": false
     },
+    "queue": {
+      ".read": "auth != null",
+      "$uid": {
+        ".write": "auth != null &amp;&amp; auth.uid == $uid",
+        ".validate": "newData.hasChildren(['n','ts']) &amp;&amp; newData.child('n').isString() &amp;&amp; newData.child('n').val().length &lt;= 30"
+      }
+    },
+    "matchbox": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    "match": {
+      "$mid": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
     ".read": false,
     ".write": false
   }
@@ -80,6 +99,9 @@
     <p><code>premiLeader</code><span class="tag">solo console</span> — premi stagione: <code>p1</code> <code>p2</code> <code>p3</code> <code>p4_10</code> <code>p11_20</code> (numeri). Li scrivi TU a mano da Firebase Console, il gioco li legge.</p>
     <p><code>supportMessages/{uid}/{msgId}</code><span class="tag">solo scrittura</span> — messaggi al supporto: email, motivo, testo.</p>
     <p><code>system</code><span class="tag">lettura</span> — annunci/messaggi di sistema: li gestisci da console.</p>
+    <p><code>queue/{uid}</code><span class="tag">pubblica lettura</span> — coda matchmaking PvP: chi cerca scrive <code>n</code> nome, <code>av/avv</code> avatar, <code>ch/lv</code> personaggio+livello, <code>rk</code> punti rank, <code>ts</code> timestamp. Ognuno scrive solo la SUA entry.</p>
+    <p><code>matchbox/{uid}</code><span class="tag">invito</span> — contiene l'id del match creato per quel giocatore. Leggibile/scrivibile da utenti loggati (l'invito lo scrive l'avversario).</p>
+    <p><code>match/{a_b}</code><span class="tag">partita live</span> — stanza PvP: <code>pa0..2</code>/<code>pb0..2</code> punteggi (-1 non tirato, 0 miss, &gt;0 punti), <code>st</code> play/done, <code>okA/okB</code>. Scrivono entrambi i giocatori del match.</p>
     <p>Tutto il resto: <b>negato</b> (deny-all di default).</p>
   </div>
 
