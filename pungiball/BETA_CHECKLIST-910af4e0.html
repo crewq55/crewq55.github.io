@@ -134,7 +134,7 @@
     <div class="item"><input type="checkbox" data-k="d5" checked><span><b>Bot assistenza</b><small>chat multilingua → ticket su Firebase supportMessages</small></span></div>
     <div class="item"><input type="checkbox" data-k="d6" checked><span><b>Regole RTDB</b><small>supportMessages, leaderboard, users, system</small></span></div>
     <div class="item"><input type="checkbox" data-k="d7" checked><span><b>Avviso guest</b><small>reminder registrazione ogni ~2,5 min nel menu</small></span></div>
-    <div class="item"><input type="checkbox" data-k="d4" checked><span><b>Messaggi di sistema</b><small>striscione + posta + regali monete + notifiche + scadenza giorni</small></span></div>
+    <div class="item"><input type="checkbox" data-k="d4" checked><span><b>Messaggi di sistema</b><small>striscione + posta + regali monete + notifiche + scadenza giorni — programmabili: <code>orastart</code>/<code>datastart</code> partenza, <code>datafine</code>/<code>orafine</code> fine auto, <code>una</code>=una volta sola, <code>nuovi</code>=solo chi non ha fatto il tutorial, piu' striscioni in coda uno dopo l'altro, date ITA+ISO</small></span></div>
     <div class="item"><input type="checkbox" data-k="b1" checked><span><b>Tasto Back Android</b><small>chiude i pannelli a livelli, annulla ricerca ranked, conferma uscita/abbandono — testato con Esc</small></span></div>
     <div class="item"><input type="checkbox" data-k="st1" checked><span><b>Pannello impostazioni</b><small>volume musica/effetti, lingua (6), grafica Low/Medio/Alto URP, salva tutto</small></span></div>
     <div class="item"><input type="checkbox" data-k="ln1" checked><span><b>Traduzione completa + arabo</b><small>testi scena tradotti in automatico, messaggi per lingua (titolo_en…), arabo RTL con Noto Sans Arabic</small></span></div>
@@ -247,7 +247,7 @@
       <li>Anti-cheat regole RTDB: solo partecipanti, max 2009/colpo, turn-order forzato, miss solo a tempo scaduto, punteggi immutabili ✅</li>
       <li><code>bans/{uid}</code> + schermo nero + appello assistenza; <code>reports/{uid}</code> auto-segnalazioni score ≥2000 ✅</li>
       <li>Economia protetta: monete +3000 e rank ±60 per write, aumenti ≥20s (wts) ✅</li>
-      <li>Emoji sincronizzate a fine battaglia: panel 10 emoji, click -> anteprima pop + il nemico la vede live sul suo lato (campi <code>ea/eb</code>, nodo vivo ~45s) ✅ — emoji VIP sbloccabili per livello (oggetto <code>10vip1</code> = serve LV10, lucchetto+avviso) e anche il nemico CPU manda emoji ✅</li>
+      <li>Emoji sincronizzate a fine battaglia: panel 10 emoji, click -> anteprima pop + il nemico la vede live sul suo lato (campi <code>ea/eb</code>, nodo vivo ~45s) ✅ — emoji VIP sbloccabili per livello (oggetto <code>10vip1</code> = serve LV10, lucchetto+avviso+pallino rosso su ButtonEmojiFine) e anche il nemico CPU manda emoji ✅</li>
       <li>Settings in partita: <code>ButtonSceneSetting</code> visibile solo nel tuo turno -> RITIRATA al posto di LOG OUT, conferma = sconfitta 0 ricompense, nemico vince subito ✅</li>
       <li>Fix UX: toast ospite accorciato + auto-size (niente fuori schermo), unita' giorni countdown localizzata (era "g" italiano in tutte le lingue) ✅</li>
       <li>Da testare con 2 account + matchmaking per rango + Cloud Function score server-side (blindatura totale)</li></ul></div>
