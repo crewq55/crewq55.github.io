@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PunchBall Arcade — Economia & Progressione</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { background: radial-gradient(ellipse at top, #141a35 0%, #0b0d16 60%); color: #e8ecf6;
+         font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 20px 16px 60px; }
+  header { text-align: center; padding: 18px 0 10px; }
+  header img.logo { height: 110px; filter: drop-shadow(0 0 18px rgba(255,190,40,.45)); }
+  h1 { font-size: 30px; letter-spacing: 3px; margin-top: 6px;
+       background: linear-gradient(90deg,#ffd23e,#ff7a2d,#ff4d6d); -webkit-background-clip: text; color: transparent; }
+  .sub { color: #7fa0c8; font-size: 14px; margin-bottom: 14px; }
+  .card { background: #10152a; border: 1px solid #253055; border-radius: 14px; padding: 16px 20px; margin-bottom: 14px; }
+  .card h3 { font-size: 17px; margin-bottom: 8px; color: #ffd23e; }
+  .card h4 { font-size: 14px; margin: 12px 0 5px; color: #7fd4ff; }
+  .card p, .card li { color: #b9c4e0; font-size: 14px; line-height: 1.55; }
+  .card ul { padding-left: 20px; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13.5px; }
+  th { color: #ffd23e; text-align: left; padding: 6px 8px; border-bottom: 2px solid #2a3560; font-size: 12px;
+       text-transform: uppercase; letter-spacing: .5px; }
+  td { color: #c4cfec; padding: 6px 8px; border-bottom: 1px dashed #223055; }
+  tr:last-child td { border-bottom: 0; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  td.hl { color: #ffd23e; font-weight: 700; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 12px; }
+  .stat { text-align: center; padding: 14px; }
+  .stat .n { font-size: 26px; font-weight: 800; color: #ffd23e; }
+  .stat .l { font-size: 12px; color: #7fa0c8; text-transform: uppercase; letter-spacing: 1px; }
+  .note { background: #1c1430; border: 1px solid #4a3560; border-radius: 12px; padding: 12px 16px;
+          color: #d9b8ff; font-size: 13px; margin: 10px 0; }
+  .warn { background: #30141c; border-color: #6a2a3a; color: #ffb3c0; }
+  code { background: #0b0f20; padding: 1px 6px; border-radius: 5px; color: #7fd4ff; font-size: 13px; }
+  footer { text-align: center; color: #45547a; font-size: 12px; margin-top: 30px; }
+  footer a { color: #ffc531; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <img class="logo" src="Assets/immag/LogosTondo.png" alt="PunchBall" onerror="this.style.display='none'">
+  <h1>ECONOMIA & PROGRESSIONE</h1>
+  <div class="sub">Tutti i numeri del gioco: EXP, monete, missioni, upgrade — aggiornato al 24 nov 2026</div>
+</header>
+
+<!-- ============ EXP GIOCATORE ============ -->
+<div class="card"><h3>⚡ Livello giocatore (PBLiv)</h3>
+  <p>L'EXP arriva <b>solo dalle partite</b> (FineBattaglia):</p>
+  <table>
+    <tr><th>Esito</th><th class="n">EXP</th><th>Dove</th></tr>
+    <tr><td>Vittoria</td><td class="n hl">60</td><td><code>expVittoria</code></td></tr>
+    <tr><td>Sconfitta</td><td class="n">15</td><td><code>expSconfitta</code></td></tr>
+  </table>
+  <p>Soglia cumulativa: <code>Soglia(lv) = 50 × lv × (lv+1)</code> — livello max 100.</p>
+  <table>
+    <tr><th>Livello</th><th class="n">EXP totale</th><th class="n">Partite (sempre win)</th><th class="n">Partite (70% win)</th><th class="n">Tempo stimato</th></tr>
+    <tr><td>→ LV2</td><td class="n">100</td><td class="n">~2</td><td class="n">~2</td><td class="n">~5 min</td></tr>
+    <tr><td>→ LV3</td><td class="n">300</td><td class="n">5</td><td class="n">~6</td><td class="n">~15 min</td></tr>
+    <tr><td>→ LV4</td><td class="n">600</td><td class="n">10</td><td class="n">~13</td><td class="n">~35 min</td></tr>
+    <tr><td class="hl">→ LV5 (sblocca STAT)</td><td class="n hl">1.000</td><td class="n hl">~17</td><td class="n hl">~22</td><td class="n hl">~1–1,5 ore</td></tr>
+    <tr><td>→ LV10</td><td class="n">5.500</td><td class="n">92</td><td class="n">~118</td><td class="n">~6 ore</td></tr>
+    <tr><td>→ LV20</td><td class="n">21.000</td><td class="n">350</td><td class="n">~450</td><td class="n">~2-3 settimane</td></tr>
+    <tr><td>→ LV50</td><td class="n">127.500</td><td class="n">2.125</td><td class="n">~2.740</td><td class="n">mesi</td></tr>
+    <tr><td>→ LV100 (max)</td><td class="n">505.000</td><td class="n">8.417</td><td class="n">~10.860</td><td class="n">1+ anno</td></tr>
+  </table>
+  <div class="note">LV5 = sblocco pannello statistiche (<code>CharSelect.livelloSbloccoStat</code>). Sotto LV5 la missione "upgrade" è esclusa dalla pescata missioni.</div>
+</div>
+
+<!-- ============ MONETE DA PARTITA ============ -->
+<div class="card"><h3>🪙 Monete dalle partite (PBMonete)</h3>
+  <table>
+    <tr><th>Esito</th><th>Formula</th><th class="n">Esempio (2500 colpi)</th></tr>
+    <tr><td>Vittoria</td><td><code>25 + totColpi / 30</code></td><td class="n hl">~108 M</td></tr>
+    <tr><td>Sconfitta</td><td><code>10 + totColpi / 60</code></td><td class="n">~52 M</td></tr>
+    <tr><td>Forfeit/ritiro avversario</td><td>monete vittoria dimezzate</td><td class="n">~54 M</td></tr>
+  </table>
+  <h4>Pulsante ×2 (pubblicità)</h4>
+  <ul>
+    <li>Solo sulle <b>vittorie</b>: raddoppia le monete del match → ~216 M a vittoria</li>
+    <li><b>Max 10 volte al giorno</b>, reset a mezzanotte, <b>non accumulabile</b></li>
+    <li>Il tasto mostra i rimasti: <code>X2 (7)</code> → all'11° utilizzo sparisce fino a domani</li>
+    <li>Le monete del ×2 <b>contano</b> per le missioni "guadagna monete"</li>
+  </ul>
+</div>
+
+<!-- ============ MISSIONI ============ -->
+<div class="card"><h3>📋 Missioni giornaliere & settimanali</h3>
+  <p>Ogni periodo si pescano <b>4 missioni dal pool</b> (1 facile, 2 medie, 1 difficile) + missione fissa login in cima.
+  Il <b>seed è la data</b> → stesse missioni per tutti i giocatori. Le chiavi del periodo precedente sono vietate (mai due uguali di fila).
+  Niente missioni "di stato" (livello) → nessuno resta bloccato.</p>
+  <h4>Obiettivi scalati sul livello giocatore</h4>
+  <table>
+    <tr><th>Livello</th><th class="n">Obiettivo</th><th>Esempio "5 match"</th></tr>
+    <tr><td>LV 1–2</td><td class="n">×0.25</td><td class="n">2 match</td></tr>
+    <tr><td>LV 3–7</td><td class="n">×0.45</td><td class="n">3 match</td></tr>
+    <tr><td>LV 8–14</td><td class="n">×0.7</td><td class="n">4 match</td></tr>
+    <tr><td>LV 15+</td><td class="n">×1</td><td class="n">5 match</td></tr>
+  </table>
+  <h4>XP missioni (calibrate sui forzieri)</h4>
+  <table>
+    <tr><th></th><th class="n">Facile</th><th class="n">Media ×2</th><th class="n">Difficile</th><th class="n">Login pin</th><th class="n">Totale</th><th class="n">Richiesto</th></tr>
+    <tr><td>Giornaliera</td><td class="n">25</td><td class="n">80</td><td class="n">55</td><td class="n">10</td><td class="n hl">170</td><td class="n">160</td></tr>
+    <tr><td>Settimanale</td><td class="n">60</td><td class="n">220</td><td class="n">170</td><td class="n">40</td><td class="n hl">490</td><td class="n">400</td></tr>
+  </table>
+  <h4>Forzieri (monete)</h4>
+  <table>
+    <tr><th>Bacheca</th><th>Soglie XP</th><th>Monete per forziere</th><th class="n">Totale</th></tr>
+    <tr><td>Giornaliera</td><td>20 / 40 / 60 / 90 / 120 / 160</td><td>25 / 50 / 75 / 100 / 150 / 200</td><td class="n hl">600/giorno</td></tr>
+    <tr><td>Settimanale</td><td>50 / 100 / 150 / 220 / 300 / 400</td><td>100 / 150 / 200 / 300 / 400 / 600</td><td class="n hl">1.750/sett</td></tr>
+  </table>
+  <div class="note">Reset: giornaliera a <b>mezzanotte</b>, settimanale <b>lunedì 00:00</b>. Missioni completate NON riscattate e forzieri sbloccati NON aperti <b>si perdono</b> — il badge rosso avvisa.</div>
+  <div class="note warn">La missione "earn" conta SOLO le monete delle partite (base + metà del ×2). Forzieri, classifica, regali e reward ads NON contano → non si completa aprendo forzieri.</div>
+</div>
+
+<!-- ============ UPGRADE STAT CHAR ============ -->
+<div class="card"><h3>💪 Upgrade statistiche personaggio</h3>
+  <p>Prezzo di ogni <b>+1</b>: <code>35 × valore attuale × scaglione livello</code> —
+  scaglione = <code>1 + lv/10</code> (LV1-9 ×1, LV10-19 ×2, LV20-29 ×3…)</p>
+  <p>Per salire di livello servono <b>tutte e 3 le stat al max</b>; al level-up gli upgrade si azzerano e il max cresce:</p>
+  <table>
+    <tr><th>Char LV</th><th class="n">Max per stat</th><th class="n">Costo livello (3 stat)</th><th class="n">Cumulativo</th></tr>
+    <tr><td>1 → 2</td><td class="n">5</td><td class="n">~1.000</td><td class="n">~1.000</td></tr>
+    <tr><td>2 → 3</td><td class="n">10</td><td class="n">~4.700</td><td class="n">~5.700</td></tr>
+    <tr><td>3 → 4</td><td class="n">20</td><td class="n">~20.000</td><td class="n">~26.000</td></tr>
+    <tr><td>4 → 5</td><td class="n">35</td><td class="n">~62.000</td><td class="n">~88.000</td></tr>
+    <tr><td>5 → 6</td><td class="n">50</td><td class="n">~129.000</td><td class="n">~217.000</td></tr>
+    <tr><td>6 → 7</td><td class="n">65</td><td class="n">~218.000</td><td class="n">~435.000</td></tr>
+    <tr><td>7 → 8</td><td class="n">80</td><td class="n">~332.000</td><td class="n">~767.000</td></tr>
+    <tr><td>8 → 9</td><td class="n">95</td><td class="n">~469.000</td><td class="n">~1.236.000</td></tr>
+    <tr><td>9 → 10</td><td class="n">110</td><td class="n">~630.000</td><td class="n">~1.866.000</td></tr>
+    <tr><td>10 → 11</td><td class="n">125</td><td class="n">~1.626.000 (×2)</td><td class="n">~3.492.000</td></tr>
+  </table>
+  <div class="note">Nessun livello max — la curva è fatta per non finire mai. Leve di bilanciamento: <code>PrezzoBaseStat</code> (ora 35), <code>MoltiplicatoreLivello</code> (ora lv/10), <code>MaxStat</code>.</div>
+</div>
+
+<!-- ============ REDDITO SETTIMANALE ============ -->
+<div class="card"><h3>📈 Reddito settimanale stimato</h3>
+  <p>Ipotesi: ~70% winrate, ~108 M a vittoria / ~52 a sconfitta, ×2 su max 10 match/giorno, forzieri completi.</p>
+  <table>
+    <tr><th>Profilo</th><th class="n">Match/giorno</th><th class="n">Da match</th><th class="n">Forzieri</th><th class="n">Totale/sett</th></tr>
+    <tr><td>Casual</td><td class="n">5</td><td class="n">~6k</td><td class="n">~6k</td><td class="n">~12k</td></tr>
+    <tr><td>Attivo</td><td class="n">15</td><td class="n">~14k</td><td class="n">~6k</td><td class="n">~20k</td></tr>
+    <tr><td>Grinder</td><td class="n">40</td><td class="n">~36k</td><td class="n">~6k</td><td class="n">~42k</td></tr>
+    <tr><td>No-life</td><td class="n">100</td><td class="n">~69k</td><td class="n">~6k</td><td class="n">~75k</td></tr>
+  </table>
+  <div class="note">Prima del cap a 10×2/giorno il no-life arrivava a ~136k/settimana (LV6 in 11 giorni). Il cap lo riporta a ~75k.</div>
+</div>
+
+<!-- ============ TIMELINE ============ -->
+<div class="card"><h3>⏱️ Timeline progressione (char principale)</h3>
+  <table>
+    <tr><th>Traguardo</th><th class="n">Attivo (~20k/sett)</th><th class="n">Grinder (~42k/sett)</th><th class="n">No-life (~75k/sett)</th></tr>
+    <tr><td>Player LV5 (stat)</td><td class="n">giorno 1</td><td class="n">giorno 1</td><td class="n">giorno 1</td></tr>
+    <tr><td>Char LV3</td><td class="n">~2 giorni</td><td class="n">1 giorno</td><td class="n">1 giorno</td></tr>
+    <tr><td>Char LV4</td><td class="n">~9 giorni</td><td class="n">~4 giorni</td><td class="n">~2 giorni</td></tr>
+    <tr><td>Char LV5</td><td class="n">~4,5 settimane</td><td class="n">~2 settimane</td><td class="n">~8 giorni</td></tr>
+    <tr><td>Char LV6</td><td class="n">~11 settimane</td><td class="n">~5 settimane</td><td class="n">~3 settimane</td></tr>
+    <tr><td>Char LV8</td><td class="n">~9 mesi</td><td class="n">~4 mesi</td><td class="n">~10 settimane</td></tr>
+    <tr><td>Char LV10</td><td class="n">~2 anni</td><td class="n">~10 mesi</td><td class="n">~6 mesi</td></tr>
+  </table>
+</div>
+
+<!-- ============ ALTRE FONTI ============ -->
+<div class="card"><h3>🎁 Altre fonti di monete / EXP</h3>
+  <ul>
+    <li><b>Reward ads</b> (macchina): monete a richiesta — conta come evento missione "reward", NON come "earn"</li>
+    <li><b>Classifica</b> (<code>premiLeader</code>): premi ai top player — non conta come "earn"</li>
+    <li><b>Messaggi/regali admin</b> (system/{id} con <code>ricompensa</code>): monete gratis in posta</li>
+    <li><b>Tutorial</b>: regalo iniziale</li>
+    <li><b>×2 dopo vittoria</b>: max 10/giorno (vedi sopra)</li>
+  </ul>
+  <h4>Dove si spendono</h4>
+  <ul>
+    <li>Upgrade stat personaggi (pozzo principale, infinito)</li>
+    <li>Sblocco nuovi personaggi (<code>buychar</code>, prezzo fisso per char)</li>
+  </ul>
+</div>
+
+<footer>PunchBall Arcade · Economia — numeri veri dal codice (Missioni.cs, FineBattaglia.cs, CharSelect.cs, ProfilePanel.cs) · <a href="BETA_CHECKLIST.html">← Beta Hub</a> · <a href="IDEE.html">Bacheca Idee →</a></footer>
+</div>
+</body>
+</html>
