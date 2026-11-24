@@ -114,6 +114,12 @@
         "ts": {
           ".validate": "newData.isNumber()"
         },
+        "ea": {
+          ".validate": "newData.isNumber() &amp;&amp; newData.val() &gt;= 1 &amp;&amp; newData.val() &lt;= 10 &amp;&amp; auth.uid == newData.parent().child('a').val()"
+        },
+        "eb": {
+          ".validate": "newData.isNumber() &amp;&amp; newData.val() &gt;= 1 &amp;&amp; newData.val() &lt;= 10 &amp;&amp; auth.uid == newData.parent().child('b').val()"
+        },
         "$other": {
           ".validate": "!data.exists()"
         }
