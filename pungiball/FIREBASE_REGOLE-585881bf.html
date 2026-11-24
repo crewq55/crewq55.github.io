@@ -48,8 +48,8 @@
       ".read": "auth != null",
       ".indexOn": ["p"],
       "$uid": {
-        ".write": "auth != null &amp;&amp; auth.uid == $uid",
-        ".validate": "newData.hasChildren(['n','p','w','l']) &amp;&amp; newData.child('n').isString() &amp;&amp; newData.child('n').val().length &lt;= 30 &amp;&amp; newData.child('p').isNumber() &amp;&amp; newData.child('p').val() &gt;= 0 &amp;&amp; newData.child('p').val() &lt;= 999999 &amp;&amp; newData.child('w').isNumber() &amp;&amp; newData.child('w').val() &gt;= 0 &amp;&amp; newData.child('w').val() &lt;= 99999 &amp;&amp; newData.child('l').isNumber() &amp;&amp; newData.child('l').val() &gt;= 0 &amp;&amp; newData.child('l').val() &lt;= 99999 &amp;&amp; (!newData.hasChild('av') || newData.child('av').isNumber()) &amp;&amp; (!newData.hasChild('avv') || newData.child('avv').isNumber())"
+        ".write": "auth != null &amp;&amp; auth.uid == $uid &amp;&amp; !root.child('bans').child(auth.uid).exists()",
+        ".validate": "newData.hasChildren(['n','p','w','l','ts']) &amp;&amp; newData.child('n').isString() &amp;&amp; newData.child('n').val().length &lt;= 30 &amp;&amp; newData.child('p').isNumber() &amp;&amp; newData.child('p').val() &gt;= 0 &amp;&amp; newData.child('p').val() &lt;= 999999 &amp;&amp; newData.child('w').isNumber() &amp;&amp; newData.child('w').val() &gt;= 0 &amp;&amp; newData.child('w').val() &lt;= 99999 &amp;&amp; newData.child('l').isNumber() &amp;&amp; newData.child('l').val() &gt;= 0 &amp;&amp; newData.child('l').val() &lt;= 99999 &amp;&amp; (!newData.hasChild('av') || newData.child('av').isNumber()) &amp;&amp; (!newData.hasChild('avv') || newData.child('avv').isNumber()) &amp;&amp; newData.child('ts').isNumber() &amp;&amp; (!data.exists() || (newData.child('w').val() &gt;= data.child('w').val() &amp;&amp; newData.child('w').val() &lt;= data.child('w').val() + 1 &amp;&amp; newData.child('l').val() &gt;= data.child('l').val() &amp;&amp; newData.child('l').val() &lt;= data.child('l').val() + 1 &amp;&amp; newData.child('p').val() &gt;= data.child('p').val() - 60 &amp;&amp; newData.child('p').val() &lt;= data.child('p').val() + 60 &amp;&amp; (newData.child('p').val() &lt;= data.child('p').val() || !data.child('ts').isNumber() || now - data.child('ts').val() &gt;= 20000)))"
       }
     },
     "premiLeader": {
@@ -59,8 +59,8 @@
     "users": {
       "$uid": {
         ".read": "auth != null &amp;&amp; auth.uid == $uid",
-        ".write": "auth != null &amp;&amp; auth.uid == $uid",
-        ".validate": "(!newData.hasChild('name') || (newData.child('name').isString() &amp;&amp; newData.child('name').val().length &lt;= 30)) &amp;&amp; (!newData.hasChild('liv') || (newData.child('liv').isNumber() &amp;&amp; newData.child('liv').val() &gt;= 1 &amp;&amp; newData.child('liv').val() &lt;= 999)) &amp;&amp; (!newData.hasChild('exp') || (newData.child('exp').isNumber() &amp;&amp; newData.child('exp').val() &gt;= 0 &amp;&amp; newData.child('exp').val() &lt;= 9999999)) &amp;&amp; (!newData.hasChild('monete') || (newData.child('monete').isNumber() &amp;&amp; newData.child('monete').val() &gt;= 0 &amp;&amp; newData.child('monete').val() &lt;= 999999)) &amp;&amp; (!newData.hasChild('rankPoints') || (newData.child('rankPoints').isNumber() &amp;&amp; newData.child('rankPoints').val() &gt;= 0 &amp;&amp; newData.child('rankPoints').val() &lt;= 999999)) &amp;&amp; (!newData.hasChild('avatar') || newData.child('avatar').isNumber()) &amp;&amp; (!newData.hasChild('avatarVip') || newData.child('avatarVip').isNumber()) &amp;&amp; (!newData.hasChild('char') || (newData.child('char').isNumber() &amp;&amp; newData.child('char').val() &gt;= 0 &amp;&amp; newData.child('char').val() &lt;= 99)) &amp;&amp; (!newData.hasChild('starter') || newData.child('starter').isString()) &amp;&amp; (!newData.hasChild('tutorial') || newData.child('tutorial').isNumber()) &amp;&amp; (!newData.hasChild('rewardNext') || newData.child('rewardNext').isString()) &amp;&amp; (!newData.hasChild('lingua') || (newData.child('lingua').isString() &amp;&amp; newData.child('lingua').val().length &lt;= 10)) &amp;&amp; (!newData.hasChild('migliore') || (newData.child('migliore').isNumber() &amp;&amp; newData.child('migliore').val() &gt;= 0 &amp;&amp; newData.child('migliore').val() &lt;= 6000))"
+        ".write": "auth != null &amp;&amp; auth.uid == $uid &amp;&amp; !root.child('bans').child(auth.uid).exists()",
+        ".validate": "(!newData.hasChild('monete') || !data.hasChild('monete') || newData.child('monete').val() &lt;= data.child('monete').val() || (newData.child('monete').val() &lt;= data.child('monete').val() + 3000 &amp;&amp; (!data.child('wts').isNumber() || now - data.child('wts').val() &gt;= 20000))) &amp;&amp; (!newData.hasChild('rankPoints') || !data.hasChild('rankPoints') || (newData.child('rankPoints').val() &gt;= data.child('rankPoints').val() - 60 &amp;&amp; newData.child('rankPoints').val() &lt;= data.child('rankPoints').val() + 60 &amp;&amp; (newData.child('rankPoints').val() &lt;= data.child('rankPoints').val() || !data.child('wts').isNumber() || now - data.child('wts').val() &gt;= 20000))) &amp;&amp; (!newData.hasChild('liv') || !data.hasChild('liv') || newData.child('liv').val() &lt;= data.child('liv').val() + 2) &amp;&amp; (!newData.hasChild('exp') || !data.hasChild('exp') || newData.child('exp').val() &lt;= data.child('exp').val() + 6000) &amp;&amp; (!newData.hasChild('migliore') || !data.hasChild('migliore') || newData.child('migliore').val() &lt;= data.child('migliore').val() + 6100) &amp;&amp; (!newData.hasChild('name') || (newData.child('name').isString() &amp;&amp; newData.child('name').val().length &lt;= 30)) &amp;&amp; (!newData.hasChild('liv') || (newData.child('liv').isNumber() &amp;&amp; newData.child('liv').val() &gt;= 1 &amp;&amp; newData.child('liv').val() &lt;= 999)) &amp;&amp; (!newData.hasChild('exp') || (newData.child('exp').isNumber() &amp;&amp; newData.child('exp').val() &gt;= 0 &amp;&amp; newData.child('exp').val() &lt;= 9999999)) &amp;&amp; (!newData.hasChild('monete') || (newData.child('monete').isNumber() &amp;&amp; newData.child('monete').val() &gt;= 0 &amp;&amp; newData.child('monete').val() &lt;= 999999)) &amp;&amp; (!newData.hasChild('rankPoints') || (newData.child('rankPoints').isNumber() &amp;&amp; newData.child('rankPoints').val() &gt;= 0 &amp;&amp; newData.child('rankPoints').val() &lt;= 999999)) &amp;&amp; (!newData.hasChild('avatar') || newData.child('avatar').isNumber()) &amp;&amp; (!newData.hasChild('avatarVip') || newData.child('avatarVip').isNumber()) &amp;&amp; (!newData.hasChild('char') || (newData.child('char').isNumber() &amp;&amp; newData.child('char').val() &gt;= 0 &amp;&amp; newData.child('char').val() &lt;= 99)) &amp;&amp; (!newData.hasChild('starter') || newData.child('starter').isString()) &amp;&amp; (!newData.hasChild('tutorial') || newData.child('tutorial').isNumber()) &amp;&amp; (!newData.hasChild('rewardNext') || newData.child('rewardNext').isString()) &amp;&amp; (!newData.hasChild('lingua') || (newData.child('lingua').isString() &amp;&amp; newData.child('lingua').val().length &lt;= 10)) &amp;&amp; (!newData.hasChild('migliore') || (newData.child('migliore').isNumber() &amp;&amp; newData.child('migliore').val() &gt;= 0 &amp;&amp; newData.child('migliore').val() &lt;= 6000))"
       }
     },
     "system": {
@@ -70,20 +70,66 @@
     "queue": {
       ".read": "auth != null",
       "$uid": {
-        ".write": "auth != null &amp;&amp; auth.uid == $uid",
-        ".validate": "newData.hasChildren(['n','ts']) &amp;&amp; newData.child('n').isString() &amp;&amp; newData.child('n').val().length &lt;= 30"
+        ".write": "auth != null &amp;&amp; auth.uid == $uid &amp;&amp; !root.child('bans').child(auth.uid).exists()",
+        ".validate": "newData.child('n').isString() &amp;&amp; newData.child('n').val().length &lt;= 30 &amp;&amp; newData.child('av').isNumber() &amp;&amp; newData.child('avv').isNumber() &amp;&amp; newData.child('ch').isNumber() &amp;&amp; newData.child('lv').isNumber() &amp;&amp; newData.child('rk').isNumber() &amp;&amp; newData.child('ts').isNumber()"
       }
     },
     "matchbox": {
       "$uid": {
         ".read": "auth != null",
-        ".write": "auth != null"
+        ".write": "auth != null &amp;&amp; !root.child('bans').child(auth.uid).exists() &amp;&amp; (auth.uid == $uid || (newData.exists() &amp;&amp; newData.child('m').isString() &amp;&amp; root.child('match').child(newData.child('m').val()).child('a').val() == auth.uid &amp;&amp; root.child('match').child(newData.child('m').val()).child('b').val() == $uid) || (!newData.exists() &amp;&amp; data.child('m').isString() &amp;&amp; root.child('match').child(data.child('m').val()).child('a').val() == auth.uid))"
       }
     },
     "match": {
       "$mid": {
-        ".read": "auth != null",
-        ".write": "auth != null"
+        ".read": "auth != null &amp;&amp; (auth.uid == data.child('a').val() || auth.uid == data.child('b').val())",
+        ".write": "auth != null &amp;&amp; !root.child('bans').child(auth.uid).exists() &amp;&amp; (auth.uid == data.child('a').val() || auth.uid == data.child('b').val() || (auth.uid == newData.child('a').val() &amp;&amp; root.child('queue').child(newData.child('a').val()).exists() &amp;&amp; root.child('queue').child(newData.child('b').val()).exists()))",
+        "pa0": {
+          ".validate": "newData.isNumber() &amp;&amp; newData.val() &gt;= -1 &amp;&amp; newData.val() &lt;= 2009 &amp;&amp; (!data.exists() || data.val() == -1) &amp;&amp; (newData.val() == -1 || (newData.val() &gt; 0 &amp;&amp; auth.uid == newData.parent().child('a').val()) || (newData.val() == 0 &amp;&amp; (auth.uid == newData.parent().child('a').val() || (auth.uid == newData.parent().child('b').val() &amp;&amp; now - data.parent().child('ts').val() &gt;= 33000))))"
+        },
+        "pa1": {
+          ".validate": "newData.isNumber() &amp;&amp; newData.val() &gt;= -1 &amp;&amp; newData.val() &lt;= 2009 &amp;&amp; (!data.exists() || data.val() == -1) &amp;&amp; (newData.val() == -1 || (newData.val() &gt; 0 &amp;&amp; auth.uid == newData.parent().child('a').val() &amp;&amp; data.parent().child('pb0').val() &gt;= 0) || (newData.val() == 0 &amp;&amp; (auth.uid == newData.parent().child('a').val() || (auth.uid == newData.parent().child('b').val() &amp;&amp; data.parent().child('pb0').val() &gt;= 0 &amp;&amp; (now - data.parent().child('ts').val() &gt;= 33000 || (data.parent().child('pa0').val() == 0 &amp;&amp; now - data.parent().child('ts').val() &gt;= 18000))))))"
+        },
+        "pa2": {
+          ".validate": "newData.isNumber() &amp;&amp; newData.val() &gt;= -1 &amp;&amp; newData.val() &lt;= 2009 &amp;&amp; (!data.exists() || data.val() == -1) &amp;&amp; (newData.val() == -1 || (newData.val() &gt; 0 &amp;&amp; auth.uid == newData.parent().child('a').val() &amp;&amp; data.parent().child('pb1').val() &gt;= 0) || (newData.val() == 0 &amp;&amp; (auth.uid == newData.parent().child('a').val() || (auth.uid == newData.parent().child('b').val() &amp;&amp; data.parent().child('pb1').val() &gt;= 0 &amp;&amp; (now - data.parent().child('ts').val() &gt;= 33000 || (data.parent().child('pa1').val() == 0 &amp;&amp; now - data.parent().child('ts').val() &gt;= 18000))))))"
+        },
+        "pb0": {
+          ".validate": "newData.isNumber() &amp;&amp; newData.val() &gt;= -1 &amp;&amp; newData.val() &lt;= 2009 &amp;&amp; (!data.exists() || data.val() == -1) &amp;&amp; (newData.val() == -1 || (newData.val() &gt; 0 &amp;&amp; auth.uid == newData.parent().child('b').val() &amp;&amp; data.parent().child('pa0').val() &gt;= 0) || (newData.val() == 0 &amp;&amp; (auth.uid == newData.parent().child('b').val() || (auth.uid == newData.parent().child('a').val() &amp;&amp; data.parent().child('pa0').val() &gt;= 0 &amp;&amp; now - data.parent().child('ts').val() &gt;= 33000))))"
+        },
+        "pb1": {
+          ".validate": "newData.isNumber() &amp;&amp; newData.val() &gt;= -1 &amp;&amp; newData.val() &lt;= 2009 &amp;&amp; (!data.exists() || data.val() == -1) &amp;&amp; (newData.val() == -1 || (newData.val() &gt; 0 &amp;&amp; auth.uid == newData.parent().child('b').val() &amp;&amp; data.parent().child('pa1').val() &gt;= 0) || (newData.val() == 0 &amp;&amp; (auth.uid == newData.parent().child('b').val() || (auth.uid == newData.parent().child('a').val() &amp;&amp; data.parent().child('pa1').val() &gt;= 0 &amp;&amp; (now - data.parent().child('ts').val() &gt;= 33000 || (data.parent().child('pb0').val() == 0 &amp;&amp; now - data.parent().child('ts').val() &gt;= 18000))))))"
+        },
+        "pb2": {
+          ".validate": "newData.isNumber() &amp;&amp; newData.val() &gt;= -1 &amp;&amp; newData.val() &lt;= 2009 &amp;&amp; (!data.exists() || data.val() == -1) &amp;&amp; (newData.val() == -1 || (newData.val() &gt; 0 &amp;&amp; auth.uid == newData.parent().child('b').val() &amp;&amp; data.parent().child('pa2').val() &gt;= 0) || (newData.val() == 0 &amp;&amp; (auth.uid == newData.parent().child('b').val() || (auth.uid == newData.parent().child('a').val() &amp;&amp; data.parent().child('pa2').val() &gt;= 0 &amp;&amp; (now - data.parent().child('ts').val() &gt;= 33000 || (data.parent().child('pb1').val() == 0 &amp;&amp; now - data.parent().child('ts').val() &gt;= 18000))))))"
+        },
+        "st": {
+          ".validate": "newData.isString() &amp;&amp; ((newData.val() == 'play' &amp;&amp; (!data.exists() || data.val() == 'play')) || (newData.val() == 'done' &amp;&amp; ((newData.parent().child('pa0').val() &gt;= 0 &amp;&amp; newData.parent().child('pa1').val() &gt;= 0 &amp;&amp; newData.parent().child('pa2').val() &gt;= 0 &amp;&amp; newData.parent().child('pb0').val() &gt;= 0 &amp;&amp; newData.parent().child('pb1').val() &gt;= 0 &amp;&amp; newData.parent().child('pb2').val() &gt;= 0) || (newData.parent().child('pa0').val() == 0 &amp;&amp; newData.parent().child('pa1').val() == 0) || (newData.parent().child('pa1').val() == 0 &amp;&amp; newData.parent().child('pa2').val() == 0) || (newData.parent().child('pb0').val() == 0 &amp;&amp; newData.parent().child('pb1').val() == 0) || (newData.parent().child('pb1').val() == 0 &amp;&amp; newData.parent().child('pb2').val() == 0) || (auth.uid == newData.parent().child('a').val() &amp;&amp; newData.parent().child('pa0').val() &gt;= 0 &amp;&amp; newData.parent().child('pa1').val() &gt;= 0 &amp;&amp; newData.parent().child('pa2').val() &gt;= 0 &amp;&amp; (newData.parent().child('pa0').val() == 0 || newData.parent().child('pa1').val() == 0 || newData.parent().child('pa2').val() == 0)) || (auth.uid == newData.parent().child('b').val() &amp;&amp; newData.parent().child('pb0').val() &gt;= 0 &amp;&amp; newData.parent().child('pb1').val() &gt;= 0 &amp;&amp; newData.parent().child('pb2').val() &gt;= 0 &amp;&amp; (newData.parent().child('pb0').val() == 0 || newData.parent().child('pb1').val() == 0 || newData.parent().child('pb2').val() == 0)) || (auth.uid == newData.parent().child('a').val() &amp;&amp; root.child('bans').child(newData.parent().child('b').val()).exists()) || (auth.uid == newData.parent().child('b').val() &amp;&amp; root.child('bans').child(newData.parent().child('a').val()).exists())))"
+        },
+        "okA": {
+          ".validate": "newData.isNumber() &amp;&amp; (newData.val() == 0 || newData.val() == 1) &amp;&amp; ((!data.exists() &amp;&amp; newData.val() == 0) || auth.uid == newData.parent().child('a').val())"
+        },
+        "okB": {
+          ".validate": "newData.isNumber() &amp;&amp; (newData.val() == 0 || newData.val() == 1) &amp;&amp; ((!data.exists() &amp;&amp; newData.val() == 0) || auth.uid == newData.parent().child('b').val())"
+        },
+        "ts": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": "!data.exists()"
+        }
+      }
+    },
+    "bans": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "reports": {
+      ".read": false,
+      "$uid": {
+        "$rep": {
+          ".write": "auth != null &amp;&amp; auth.uid == $rep",
+          ".validate": "newData.child('m').isString() &amp;&amp; newData.child('m').val().length &lt;= 200"
+        }
       }
     },
     ".read": false,
@@ -94,15 +140,31 @@
 
   <div class="card">
     <h2>🗂 Struttura dati (cosa scrive il gioco)</h2>
-    <p><code>users/{uid}</code><span class="tag">privato</span> — progressione: name, liv, exp, monete, rankPoints, migliore, char, avatar, starter, tutorial, rewardNext, lingua, char_*</p>
-    <p><code>leaderboard/{uid}</code><span class="tag">pubblica lettura</span> — classifica: <code>n</code> nome, <code>p</code> punti rank, <code>w</code> vinte, <code>l</code> perse, <code>av</code>/<code>avv</code> avatar. Il gioco fa la query Top 20 con <code>orderBy p</code> (per questo serve <code>.indexOn</code>).</p>
+    <p><code>users/{uid}</code><span class="tag">privato</span> — progressione: name, liv, exp, monete, rankPoints, migliore, char, avatar, starter, tutorial, rewardNext, lingua, char_*, wts. <b>Delta-cap + rate-limit</b>: monete +3000 e rankPoints ±60 max per write, aumenti solo ogni ≥20s (wts).</p>
+    <p><code>leaderboard/{uid}</code><span class="tag">pubblica lettura</span> — classifica: <code>n</code> nome, <code>p</code> punti rank, <code>w</code> vinte, <code>l</code> perse, <code>av</code>/<code>avv</code> avatar, <code>ts</code>. w/l salgono max +1 a write, p max ±60, aumenti di p solo ogni ≥20s.</p>
     <p><code>premiLeader</code><span class="tag">solo console</span> — premi stagione: <code>p1</code> <code>p2</code> <code>p3</code> <code>p4_10</code> <code>p11_20</code> (numeri). Li scrivi TU a mano da Firebase Console, il gioco li legge.</p>
     <p><code>supportMessages/{uid}/{msgId}</code><span class="tag">solo scrittura</span> — messaggi al supporto: email, motivo, testo.</p>
     <p><code>system</code><span class="tag">lettura</span> — annunci/messaggi di sistema: li gestisci da console.</p>
     <p><code>queue/{uid}</code><span class="tag">pubblica lettura</span> — coda matchmaking PvP: chi cerca scrive <code>n</code> nome, <code>av/avv</code> avatar, <code>ch/lv</code> personaggio+livello, <code>rk</code> punti rank, <code>ts</code> timestamp. Ognuno scrive solo la SUA entry.</p>
-    <p><code>matchbox/{uid}</code><span class="tag">invito</span> — contiene l'id del match creato per quel giocatore. Leggibile/scrivibile da utenti loggati (l'invito lo scrive l'avversario).</p>
-    <p><code>match/{a_b}</code><span class="tag">partita live</span> — stanza PvP: <code>pa0..2</code>/<code>pb0..2</code> punteggi (-1 non tirato, 0 miss, &gt;0 punti), <code>st</code> play/done, <code>okA/okB</code>. Scrivono entrambi i giocatori del match.</p>
+    <p><code>matchbox/{uid}</code><span class="tag">invito</span> — id del match per quel giocatore. Lo scrive SOLO il creatore <code>a</code> del match, SOLO nel box di <code>b</code> — niente inviti spam.</p>
+    <p><code>match/{a_b}</code><span class="tag">partita live</span> — stanza PvP: <code>pa0..2</code>/<code>pb0..2</code> punteggi (-1 non tirato, 0 miss, &gt;0 punti), <code>st</code> play/done, <code>okA/okB</code>. Leggono e scrivono SOLO i due partecipanti.</p>
+    <p><code>bans/{uid}</code><span class="tag">solo console</span> — <code>{m: "motivo"}</code>. Lo scrivi TU da Console → banna l'utente: schermo nero nel gioco, niente queue/match/sync, match in corso perso a tavolino.</p>
+    <p><code>reports/{suoUid}/{mioUid}</code><span class="tag">solo console</span> — segnalazioni cheat automatiche dal client avversario (<code>m</code> motivo, <code>mid</code> match, <code>ts</code>). Le leggi in Console e poi banni scrivendo in <code>bans</code>.</p>
     <p>Tutto il resto: <b>negato</b> (deny-all di default).</p>
+  </div>
+
+  <div class="card">
+    <h2>🛡 Anti-cheat (cosa bloccano le regole)</h2>
+    <p>• <b>Match: solo i 2 giocatori</b> leggono/scrivono dentro — nessuno tocca partite altrui.</p>
+    <p>• <b>Match creato solo tra giocatori in coda</b> — impossibile inventare partite o inviti.</p>
+    <p>• <b>Ognuno scrive solo i propri punteggi</b> (pa*=a, pb*=b); l'avversario può scrivere solo <code>0</code> di timeout.</p>
+    <p>• <b>Punteggio ≤ 2009</b> per colpo (tetto reale 1999 + 10 bonus): niente punteggi impossibili.</p>
+    <p>• <b>Turn order forzato</b>: pa1 solo dopo pb0, ecc. — niente colpi dal futuro.</p>
+    <p>• <b>Zero avversario solo a tempo scaduto</b>: ≥33s dall'ultima attività (o ≥18s nel turno penalità 15s).</p>
+    <p>• <b>Punteggi immutabili</b> una volta registrati; <b>st=done</b> solo a partita risolta o avversario bannato.</p>
+    <p>• <b>Economia (users/leaderboard)</b>: aumenti di monete/exp/liv/rank/punti limitati per write e nel tempo — il cheat-engine non può più scrivere 999999 in un colpo.</p>
+    <p>• <b>Utente bannato</b>: non può scrivere NIENTE sul cloud (users, leaderboard, queue, match). In partita l'avversario chiude subito il match e vince.</p>
+    <p>⚠️ <b>Limite residuo</b>: punteggi plausibili-ma-falsi e grinding lento (+3000 monete / 20s) restano possibili — il client calcola i propri dati. Blindatura totale = Cloud Function server-side (roadmap).</p>
   </div>
 
   <div class="card warn">
@@ -110,6 +172,7 @@
     <p>• Cambi le regole → premi <b>Pubblica</b> → attive in ~5 secondi, niente rebuild.</p>
     <p>• <code>lb: HTTP_401</code> in Console = regole non pubblicate o path sbagliato.</p>
     <p>• Per editare i premi: Console → Dati → crea <code>premiLeader</code> → figli <code>p1</code>=5000, <code>p2</code>=3000, <code>p3</code>=2000, <code>p4_10</code>=1000, <code>p11_20</code>=500.</p>
+    <p>• <b>Per bannare</b>: Console → Dati → crea <code>bans</code> → figlio <code>&lt;uid&gt;</code> → valore <code>{"m":"cheat"}</code>. L'uid lo trovi in <code>reports</code> o in <code>leaderboard</code>. Per sbannare: cancella il figlio.</p>
     <p>• Gli ospiti (non loggati) NON leggono/scrivono niente sul cloud: i dati restano locali.</p>
   </div>
 </div>
