@@ -244,7 +244,10 @@
     <div class="card"><h3>v0.5 — 1v1 Online <span class="badge b-wip">IN CORSO</span></h3>
       <ul><li>PvP live via RTDB: coda + stanza + turni reali sincronizzati ✅</li><li>Penalita' timeout: miss=0, turno dopo a 15s rosso "PENALIZZAZIONE" (visibile a entrambi), 2 miss = vittoria a tavolino ✅</li>
       <li>Resume dopo chiusura app (stato dal server) + abbandono = sconfitta ✅</li>
-      <li>Matchmaking per rango + anti-cheat punteggi lato server</li></ul></div>
+      <li>Anti-cheat regole RTDB: solo partecipanti, max 2009/colpo, turn-order forzato, miss solo a tempo scaduto, punteggi immutabili ✅</li>
+      <li><code>bans/{uid}</code> + schermo nero + appello assistenza; <code>reports/{uid}</code> auto-segnalazioni score ≥2000 ✅</li>
+      <li>Economia protetta: monete +3000 e rank ±60 per write, aumenti ≥20s (wts) ✅</li>
+      <li>Da testare con 2 account + matchmaking per rango + Cloud Function score server-side (blindatura totale)</li></ul></div>
     <div class="card"><h3>v0.6+ — Contenuti <span class="badge b-idea">IDEA</span></h3>
       <ul><li>Nuovi personaggi (slot Coming Soon già pronti)</li><li>Nuove macchine/arene e skin</li><li>Eventi a tempo + missioni giornaliere</li></ul></div>
   </div>
@@ -276,7 +279,15 @@
     Struttura: <code>users/{uid}</code> salvataggi · <code>supportMessages/{uid}</code> ticket ·
     <code>leaderboard/{week}/{uid}</code> futura classifica · <code>system/{id}</code> messaggi.<br>
     PvP: <code>queue/{uid}</code> chi cerca · <code>matchbox/{uid}</code> invito match ·
-    <code>match/{a_b}</code> stanza partita (pa0..2/pb0..2: -1 non tirato, 0 miss, &gt;0 punti).</p></div>
+    <code>match/{a_b}</code> stanza partita (pa0..2/pb0..2: -1 non tirato, 0 miss, &gt;0 punti).<br>
+    Anti-cheat: <code>bans/{uid}</code> ban manuale da console (schermo nero + appello) · <code>reports/{uid}</code> segnalazioni auto.
+    Regole complete in FIREBASE_REGOLE.html.</p></div>
+  <div class="card"><h3>Quota Firebase (piano Spark gratis)</h3>
+    <p><b>10 GB/mese download</b> (~333 MB/giorno) · 1 GB storage · 100 connessioni realtime.<br>
+    Il REST polling NON conta come connessione simultanea → nessun limite pratico di utenti online.<br>
+    ~700 KB a partita (2 giocatori: scan coda + polling match) → <b>~300-500 partite/giorno</b> di budget.<br>
+    Oltre → <b>Blaze</b> (pay-as-you-go): banda ~$1/GB, per volumi piccoli pochi $/mese.<br>
+    Monitora: Console → Uso e fatturazione.</p></div>
   <div class="card"><h3>Messaggi sistema — formato</h3>
     <p><code>{ titolo, testo, data, ora, tipo, ricompensa, avviso, giorni }</code><br>
     <code>tipo</code>: all / banner / msg · <code>ricompensa</code>: monete RITIRA ·

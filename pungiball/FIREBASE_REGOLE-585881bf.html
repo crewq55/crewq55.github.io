@@ -167,6 +167,16 @@
     <p>⚠️ <b>Limite residuo</b>: punteggi plausibili-ma-falsi e grinding lento (+3000 monete / 20s) restano possibili — il client calcola i propri dati. Blindatura totale = Cloud Function server-side (roadmap).</p>
   </div>
 
+  <div class="card">
+    <h2>📊 Quota — piano Spark (gratis)</h2>
+    <p>• <b>10 GB/mese download</b> (~333 MB/giorno) · 1 GB storage · 100 connessioni realtime.</p>
+    <p>• Il REST polling <b>non conta come connessione simultanea</b> (ogni GET si chiude subito) → nessun limite pratico di giocatori online insieme.</p>
+    <p>• Traffico a partita: scan coda + polling match ≈ <b>~700 KB per 2 giocatori</b> → <b>~300-500 partite/giorno</b> di budget.</p>
+    <p>• Superato il limite giornaliero → il DB risponde 401/429 fino a mezzanotte, poi riparte da solo (niente danni).</p>
+    <p>• <b>Blaze (pay-as-you-go)</b>: stessi limiti connessioni, banda ~$1/GB → per un gioco piccolo pochi $/mese. Upgrade quando superi ~400 match/giorno.</p>
+    <p>• Monitora il consumo: Firebase Console → Uso e fatturazione.</p>
+  </div>
+
   <div class="card warn">
     <h2>⚠️ Regole rapide</h2>
     <p>• Cambi le regole → premi <b>Pubblica</b> → attive in ~5 secondi, niente rebuild.</p>
