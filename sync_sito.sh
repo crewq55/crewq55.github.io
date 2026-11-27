@@ -9,8 +9,9 @@ PW="$(echo "${1:-saidsaid}" | tr 'A-Z' 'a-z')"
 SRC="C:/Users/icelil/PunchBall/docs"
 SITE="C:/Users/icelil/site/pungiball"
 TPL="C:/Users/icelil/site/gate_template.html"
-mkdir -p "$SITE"
+mkdir -p "$SITE" "$SITE/img"
 cp "$SRC/privacy.html" "$SRC/terms.html" "$SITE/"
+cp "$SRC"/img/*.png "$SITE/img/" 2>/dev/null || true   # logo+char per checklist
 
 lock() {
   local f="$1" title="$2"

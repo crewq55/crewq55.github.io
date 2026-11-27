@@ -103,17 +103,50 @@
   <h4>XP missioni (calibrate sui forzieri)</h4>
   <table>
     <tr><th></th><th class="n">Facile</th><th class="n">Media ×2</th><th class="n">Difficile</th><th class="n">Login pin</th><th class="n">Totale</th><th class="n">Richiesto</th></tr>
-    <tr><td>Giornaliera</td><td class="n">25</td><td class="n">80</td><td class="n">55</td><td class="n">10</td><td class="n hl">170</td><td class="n">160</td></tr>
-    <tr><td>Settimanale</td><td class="n">60</td><td class="n">220</td><td class="n">170</td><td class="n">40</td><td class="n hl">490</td><td class="n">400</td></tr>
+    <tr><td>Giornaliera</td><td class="n">25</td><td class="n">80</td><td class="n">55</td><td class="n">10</td><td class="n hl">170</td><td class="n">165</td></tr>
+    <tr><td>Settimanale</td><td class="n">60</td><td class="n">220</td><td class="n">170</td><td class="n">40</td><td class="n hl">490</td><td class="n">450</td></tr>
   </table>
   <h4>Forzieri (monete)</h4>
   <table>
     <tr><th>Bacheca</th><th>Soglie XP</th><th>Monete per forziere</th><th class="n">Totale</th></tr>
-    <tr><td>Giornaliera</td><td>20 / 40 / 60 / 90 / 120 / 160</td><td>25 / 50 / 75 / 100 / 150 / 200</td><td class="n hl">600/giorno</td></tr>
-    <tr><td>Settimanale</td><td>50 / 100 / 150 / 220 / 300 / 400</td><td>100 / 150 / 200 / 300 / 400 / 600</td><td class="n hl">1.750/sett</td></tr>
+    <tr><td>Giornaliera</td><td>15 / 35 / 70 / 105 / 140 / 165</td><td>25 / 50 / 75 / 100 / 150 / 200</td><td class="n hl">600/giorno</td></tr>
+    <tr><td>Settimanale</td><td>50 / 110 / 180 / 250 / 340 / 450</td><td>100 / 150 / 200 / 300 / 400 / 600</td><td class="n hl">1.750/sett</td></tr>
   </table>
   <div class="note">Reset: giornaliera a <b>mezzanotte</b>, settimanale <b>lunedì 00:00</b>. Missioni completate NON riscattate e forzieri sbloccati NON aperti <b>si perdono</b> — il badge rosso avvisa.</div>
   <div class="note warn">La missione "earn" conta SOLO le monete delle partite (base + metà del ×2). Forzieri, classifica, regali e reward ads NON contano → non si completa aprendo forzieri.</div>
+</div>
+
+<!-- ============ ACHIEVEMENTS ============ -->
+<div class="card"><h3>🏆 Achievements (traguardi)</h3>
+  <p>10 traguardi <b>permanenti</b> — nessun timer, ognuno si completa quando vuole.
+  Il testo mostra il progresso <code>X/target</code>; a target raggiunto il pulsante <b>pulsa e va reclamato col click</b>
+  (animazione + stelline che volano al premio). Il badge su ButtonAchiviements resta acceso finché c'è qualcosa da reclamare.
+  Ogni traguardo ha lo <b>step 2</b> già previsto per la prossima ondata.</p>
+  <table>
+    <tr><th>#</th><th>Traguardo</th><th class="n">Step 1 (ora)</th><th class="n">Step 2</th></tr>
+    <tr><td>1</td><td>Partite ranked giocate (win+lose)</td><td class="n hl">50</td><td class="n">80</td></tr>
+    <tr><td>2</td><td>Grado ranked raggiunto</td><td class="n hl">GOLD · 750 RP</td><td class="n">DIAMOND · 2500</td></tr>
+    <tr><td>3</td><td>Colpi PERFECT totali</td><td class="n hl">40</td><td class="n">60</td></tr>
+    <tr><td>4</td><td>Livello personale (PBLiv)</td><td class="n hl">8</td><td class="n">—</td></tr>
+    <tr><td>5</td><td>Sfide amici in stanza privata</td><td class="n hl">6</td><td class="n">8</td></tr>
+    <tr><td>6</td><td>Amici invitati col tuo codice</td><td class="n hl">6</td><td class="n">8</td></tr>
+    <tr><td>7</td><td>Pugno singolo più forte (PBTopS0)</td><td class="n hl">1.040</td><td class="n">1.050</td></tr>
+    <tr><td>8</td><td>Livello di un personaggio qualsiasi</td><td class="n hl">4</td><td class="n">7</td></tr>
+    <tr><td>9</td><td>Monete spese totali (upgrade + char)</td><td class="n hl">8.000</td><td class="n">12.000</td></tr>
+    <tr><td>10</td><td>TOP settimanale in una delle due classifiche</td><td class="n hl">TOP 15</td><td class="n">TOP 10</td></tr>
+  </table>
+  <h4>Premio finale</h4>
+  <p>Tutti e 10 reclamati → stelline da ogni pulsante → esplosione → <b>NYX</b>: personaggio esclusivo
+  <b>non comprabile</b> (Forza 3 · Focus 4 · Rabbia 4 — idle e camminata proprie).
+  Click sul premio → apre PanelCharacter sulla sua cella.</p>
+  <div class="note">Contatori: <code>PBAckU*, PBAckPerfect, PBAckMoneteUsate, PBAckSfide, PBAckInviti, PBAckTop15</code>.
+  #10 si salva permanente (<code>PBAckTop15</code>) — il reset settimanale non lo cancella.
+  #5 e #6 LIVE ✅ — stanza privata PLAY ZONE → Buttonfriendadd → ButtonSfidaAmici:
+  codice a 6 cifre (scade in 60s), handshake via <code>queue/{uid}.cd</code> (campo extra
+  consentito dal .validate; le entry codificate sono invisibili al matchmaking ranked),
+  match creato dal uid minore come nel matchmaking + matchbox all'altro.
+  <code>PBAckSfide</code> conta su entrambi a partita avviata (rdyA+rdyB),
+  <code>PBAckInviti</code> solo al creator del codice. Click su Ack5/6 = deep-link al menu sfida.</div>
 </div>
 
 <!-- ============ UPGRADE STAT CHAR ============ -->

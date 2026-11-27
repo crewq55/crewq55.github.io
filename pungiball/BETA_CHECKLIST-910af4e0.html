@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PunchBall Arcade — Beta Hub</title>
+<title>PunchBall Arcade — Command Center</title>
 <style>
   * { box-sizing: border-box; margin: 0; }
+  :root { --gold:#ffd23e; --blue:#4dc3ff; --green:#2bd46f; --red:#ff8080; --purple:#d9a8ff; }
   body { background: radial-gradient(ellipse at top, #141a35 0%, #0b0d16 60%); color: #e8ecf6;
          font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
-  .wrap { max-width: 860px; margin: 0 auto; padding: 20px 16px 60px; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 20px 16px 60px; }
 
-  /* HEADER */
   header { text-align: center; padding: 18px 0 6px; }
   header img.logo { height: 110px; filter: drop-shadow(0 0 18px rgba(255,190,40,.45)); }
   h1 { font-size: 30px; letter-spacing: 3px; margin-top: 6px;
@@ -18,68 +18,107 @@
   .sub { color: #7fa0c8; font-size: 14px; margin-bottom: 14px; }
   .bar { background: #1a2036; border-radius: 12px; height: 22px; overflow: hidden; border: 1px solid #2a3560; }
   .bar i { display: block; height: 100%; background: linear-gradient(90deg,#2bd46f,#1fa8ff); width: 0%; transition: width .5s; }
-  .bart { text-align: center; color: #2bd46f; font-weight: bold; margin: 8px 0 18px; font-size: 14px; }
+  .bart { text-align: center; color: var(--green); font-weight: bold; margin: 8px 0 18px; font-size: 14px; }
 
-  /* TABS */
-  nav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px;
+        position: sticky; top: 0; z-index: 50; padding: 10px 0; background: linear-gradient(#0b0d16 70%, transparent); }
   nav button { background: #131a30; color: #9fb4dd; border: 1px solid #2a3560; border-radius: 10px;
-               padding: 10px 16px; font-size: 14px; font-weight: 600; cursor: pointer; transition: .2s; }
-  nav button:hover { border-color: #ffd23e; color: #ffd23e; }
-  nav button.on { background: linear-gradient(135deg,#2a3560,#1a2244); color: #ffd23e; border-color: #ffd23e;
+               padding: 10px 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: .2s; }
+  nav button:hover { border-color: var(--gold); color: var(--gold); }
+  nav button.on { background: linear-gradient(135deg,#2a3560,#1a2244); color: var(--gold); border-color: var(--gold);
                   box-shadow: 0 0 14px rgba(255,210,62,.25); }
 
   .page { display: none; } .page.on { display: block; animation: fade .25s; }
   @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
 
-  /* CARDS */
   .card { background: #10152a; border: 1px solid #253055; border-radius: 14px; padding: 16px 20px; margin-bottom: 14px; }
-  .card h3 { font-size: 17px; margin-bottom: 8px; color: #ffd23e; }
+  .card h3 { font-size: 17px; margin-bottom: 8px; color: var(--gold); }
+  .card h4 { font-size: 14px; margin: 12px 0 6px; color: var(--blue); }
   .card p, .card li { color: #b9c4e0; font-size: 14px; line-height: 1.55; }
-  .card ul { padding-left: 20px; }
+  .card ul, .card ol { padding-left: 20px; }
+  .card li { margin-bottom: 4px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 12px; }
 
   .stat { text-align: center; padding: 14px; }
-  .stat .n { font-size: 26px; font-weight: 800; color: #ffd23e; }
+  .stat .n { font-size: 26px; font-weight: 800; color: var(--gold); }
   .stat .l { font-size: 12px; color: #7fa0c8; text-transform: uppercase; letter-spacing: 1px; }
 
   .chars { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .char { width: 110px; text-align: center; }
+  .char { width: 105px; text-align: center; }
   .char img { width: 100%; border-radius: 12px; border: 2px solid #2a3560; transition: .2s; }
-  .char:hover img { border-color: #ffd23e; transform: translateY(-3px); }
+  .char:hover img { border-color: var(--gold); transform: translateY(-3px); }
   .char span { font-size: 13px; font-weight: 600; color: #9fb4dd; }
 
   .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px; margin-left: 8px; vertical-align: middle; }
-  .b-ok { background: #123a24; color: #2bd46f; }
-  .b-wip { background: #3a2f12; color: #ffd23e; }
-  .b-next { background: #12283a; color: #4dc3ff; }
-  .b-idea { background: #2c1340; color: #d9a8ff; }
+  .b-ok { background: #123a24; color: var(--green); }
+  .b-wip { background: #3a2f12; color: var(--gold); }
+  .b-next { background: #12283a; color: var(--blue); }
+  .b-idea { background: #2c1340; color: var(--purple); }
 
   .item { display: flex; gap: 10px; align-items: flex-start; padding: 9px 4px; border-bottom: 1px dashed #223055; cursor: pointer; }
   .item:last-child { border: 0; }
-  .item input { margin-top: 4px; transform: scale(1.35); accent-color: #2bd46f; cursor: pointer; }
+  .item input { margin-top: 4px; transform: scale(1.35); accent-color: var(--green); cursor: pointer; flex-shrink: 0; }
   .item b { color: #fff; font-size: 15px; }
   .item small { color: #8fa3cf; display: block; }
   .done b, .done small { text-decoration: line-through; color: #5d6d94; }
 
-  .note { background: #1c1430; border: 1px solid #4a3560; border-radius: 12px; padding: 12px 16px; color: #d9b8ff; font-size: 13px; }
-  .hint { color: #ffd23e; font-weight: bold; }
+  .note { background: #1c1430; border: 1px solid #4a3560; border-radius: 12px; padding: 12px 16px; color: var(--purple); font-size: 13px; margin-bottom: 14px; }
+  .note.ok { background: #0f2418; border-color: #1e5c38; color: #9fe0b8; }
+  .note.warn { background: #2a1a10; border-color: #6b4423; color: #ffc890; }
+  .hint { color: var(--gold); font-weight: bold; }
   code { background: #0b0f20; padding: 1px 6px; border-radius: 5px; color: #7fd4ff; font-size: 13px; }
-  .prio { font-size: 11px; color: #ff8080; font-weight: 700; }
-  .prio.y { color: #ffd23e; } .prio.g { color: #2bd46f; }
+  .prio { font-size: 11px; color: var(--red); font-weight: 700; }
+  .prio.y { color: var(--gold); } .prio.g { color: var(--green); }
+
   .road { border-left: 3px solid #2a3560; padding-left: 16px; margin-left: 6px; }
   .road .card { position: relative; }
   .road .card::before { content: ''; position: absolute; left: -25px; top: 22px; width: 12px; height: 12px;
-                        background: #ffd23e; border-radius: 50%; box-shadow: 0 0 10px #ffd23e; }
-  footer { text-align: center; color: #45547a; font-size: 12px; margin-top: 30px; }
+                        background: var(--gold); border-radius: 50%; box-shadow: 0 0 10px var(--gold); }
+
+  /* ---- OPS / builder ---- */
+  .steps { counter-reset: st; padding-left: 0; list-style: none; }
+  .steps li { position: relative; padding: 10px 12px 10px 52px; margin-bottom: 8px; background: #0d1126; border-radius: 10px; }
+  .steps li::before { counter-increment: st; content: counter(st); position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+                      width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg,#ffd23e,#ff7a2d);
+                      color: #1a1020; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  table.f { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+  table.f th { text-align: left; color: var(--gold); padding: 6px 8px; border-bottom: 2px solid #2a3560; font-size: 12px; text-transform: uppercase; }
+  table.f td { padding: 7px 8px; border-bottom: 1px solid #1d2748; color: #b9c4e0; vertical-align: top; }
+  table.f td:first-child { white-space: nowrap; }
+  pre.j { background: #070b18; border: 1px solid #253055; border-radius: 10px; padding: 12px 14px; overflow-x: auto;
+          color: #a8e6a1; font-size: 13px; line-height: 1.5; position: relative; margin: 8px 0; }
+  .copy { position: absolute; top: 8px; right: 8px; background: #22305a; color: #cfe0ff; border: 1px solid #3a4a80;
+          border-radius: 7px; padding: 4px 10px; font-size: 11px; cursor: pointer; }
+  .copy:hover { background: #2c3d70; }
+  .frow { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 10px; margin: 10px 0; }
+  .frow label { display: block; font-size: 11px; color: #7fa0c8; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+  .frow input, .frow select, .frow textarea { width: 100%; background: #0b0f20; border: 1px solid #2a3560; color: #e8ecf6;
+          border-radius: 8px; padding: 8px 10px; font-size: 14px; font-family: inherit; }
+  .frow textarea { resize: vertical; min-height: 56px; }
+  .chk { display: flex; gap: 16px; flex-wrap: wrap; margin: 8px 0; }
+  .chk label { display: flex; gap: 6px; align-items: center; font-size: 13px; color: #b9c4e0; cursor: pointer; }
+  .chk input { transform: scale(1.2); accent-color: var(--gold); }
+  .gen { background: linear-gradient(135deg,#ffd23e,#ff7a2d); border: 0; color: #1a1020; font-weight: 800;
+         padding: 11px 26px; border-radius: 10px; font-size: 15px; cursor: pointer; margin: 6px 0; }
+  .gen:hover { filter: brightness(1.1); }
+  .tpl { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 10px; }
+  .tpl button { background: #131a30; border: 1px solid #2a3560; color: #cfe0ff; border-radius: 10px; padding: 12px;
+                font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; transition: .15s; }
+  .tpl button:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .tpl button small { display: block; color: #7fa0c8; font-weight: 400; margin-top: 3px; }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13px; }
+  .kv b { color: var(--blue); white-space: nowrap; }
+  footer { text-align: center; color: #45547a; font-size: 12px; margin-top: 30px; line-height: 2; }
+  footer a { color: #ffc531; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <header>
-  <img class="logo" src="Assets/immag/LogosTondo.png" alt="PunchBall" onerror="this.style.display='none'">
+  <img class="logo" src="img/logo.png" alt="PunchBall">
   <h1>PUNCHBALL ARCADE</h1>
-  <div class="sub">Beta Hub — stato progetto, roadmap e cose da fare</div>
+  <div class="sub">Command Center — stato, operazioni Firebase, lancio e futuro</div>
   <div class="bar"><i id="bar"></i></div>
   <div class="bart" id="bart"></div>
 </header>
@@ -88,8 +127,9 @@
   <button data-p="home" class="on">🏠 Panoramica</button>
   <button data-p="done">✅ Fatto</button>
   <button data-p="todo">🔴 Da fare</button>
-  <button data-p="play">📱 Play Store</button>
-  <button data-p="road">🚀 Prossimi update</button>
+  <button data-p="ops">🎛️ Firebase Ops</button>
+  <button data-p="play">🏪 Lancio</button>
+  <button data-p="future">🚀 Futuro</button>
   <button data-p="ideas">💡 Idee</button>
   <button data-p="tech">🔧 Tecnico</button>
 </nav>
@@ -97,25 +137,29 @@
 <!-- ============ PANORAMICA ============ -->
 <div class="page on" id="p-home">
   <div class="card"><h3>Cos'è</h3>
-    <p>Arcade mobile per Android: macchina della forza con pugni a turni, personaggi collezionabili, upgrade stat, ranked stagionale, ricompense giornaliere e account cloud su Firebase.</p>
+    <p>Arcade mobile per Android: macchina della forza con pugni a turni, personaggi collezionabili, upgrade stat,
+    ranked stagionale + PvP online live, sfide tra amici, missioni, achievements e account cloud su Firebase.</p>
   </div>
   <div class="card"><h3>Roster</h3>
     <div class="chars">
-      <div class="char"><img src="Assets/FotoCharChar/Ronny.png"><span>Ronny</span></div>
-      <div class="char"><img src="Assets/FotoCharChar/Kate.png"><span>Kate</span></div>
-      <div class="char"><img src="Assets/FotoCharChar/Linda.png"><span>Linda</span></div>
-      <div class="char"><img src="Assets/FotoCharChar/Young.png"><span>Young</span></div>
-      <div class="char"><img src="Assets/FotoCharChar/ComingSoon.png"><span>???</span></div>
+      <div class="char"><img src="img/ronny.png"><span>Ronny</span></div>
+      <div class="char"><img src="img/kate.png"><span>Kate</span></div>
+      <div class="char"><img src="img/linda.png"><span>Linda</span></div>
+      <div class="char"><img src="img/young.png"><span>Young</span></div>
+      <div class="char"><img src="img/nyx.png"><span>Nyx 🏆</span></div>
+      <div class="char"><img src="img/soon.png"><span>???</span></div>
     </div>
   </div>
   <div class="grid">
-    <div class="card stat"><div class="n" id="st-done">-</div><div class="l">feature fatte</div></div>
+    <div class="card stat"><div class="n" id="st-done">-</div><div class="l">task completati</div></div>
     <div class="card stat"><div class="n" id="st-todo">-</div><div class="l">da fare</div></div>
     <div class="card stat"><div class="n">6</div><div class="l">lingue</div></div>
-    <div class="card stat"><div class="n">4+1</div><div class="l">personaggi</div></div>
+    <div class="card stat"><div class="n">0.1.0</div><div class="l">versione attuale</div></div>
   </div>
-  <div class="note">🔑 <b>Keystore</b>: <code>PunchBallArcade.keystore</code> root progetto — alias <code>punchballarcade</code> — 30 anni.
+  <div class="note warn">🔑 <b>Keystore</b>: <code>PunchBallArcade.keystore</code> root progetto — alias <code>punchballarcade</code> — 30 anni.
     <span class="hint">Hint password: MA</span> (promemoria, non la password). Backup su USB/cloud. MAI su Git.</div>
+  <div class="note ok">💡 <b>Vuoi pubblicare uno striscione, un regalo o un evento?</b>
+    Vai alla tab <b>🎛️ Firebase Ops</b>: c'è il generatore JSON — compili, copi, incolli su Firebase. 30 secondi.</div>
 </div>
 
 <!-- ============ FATTO ============ -->
@@ -127,132 +171,250 @@
     <div class="item"><input type="checkbox" data-k="g4" checked><span><b>Daily reward + tutorial</b><small>premio 24h, tutorial guidato con coach, regalo 1000 monete</small></span></div>
     <div class="item"><input type="checkbox" data-k="g5" checked><span><b>Audio completo</b><small>suoni reali + procedurali, crossfade musica, volumi solo da SndVolumi, ducking</small></span></div>
     <div class="item"><input type="checkbox" data-k="g6" checked><span><b>Profilo + avatar</b><small>nome, livello, EXP, avatar liberi/VIP, statistiche</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ac1" checked><span><b>Achievements</b><small>10 traguardi permanenti: grigio→colori col click claim, badge notifica, pulsante pulsa, stelline→premio, esplosione finale, info in 6 lingue</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ac2" checked><span><b>Nyx — char premio</b><small>sblocco con tutti i 10 achievements: Cell4 "SBLOCCABILE" → click prezzo porta ai traguardi; stats 3/4/4</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ac3" checked><span><b>3 arene casuali</b><small>città / deserto / sala giochi 3D — nei match online lo sfondo è sincronizzato (stesso per entrambi i device, hash del match id)</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ac4" checked><span><b>Leaderboard doppia + timer</b><small>TOP RANK + TOP MAX SCORE (somma 3 pugni settimana), scroll verticale, timer reset lunedì, badge lega, podio condiviso, solo pugni ranked contano in TOP MAX</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ac9" checked><span><b>Sfida amici — stanza privata</b><small>PLAY ZONE → Buttonfriendadd → SFIDA AMICI: codice 6 cifre (60s), accettazione 5s, JoinMatch pulsante 30s, ingresso via VS come ranked. Match for-fun: niente exp/monete. Campo "cd" nella queue (zero regole nuove), match creato dal uid minore, niente resume di nodi stale. Ack #5-6 contati a partita avviata; click su Ack5/6 apre la rotta</small></span></div>
   </div>
   <div class="card"><h3>Account & Cloud</h3>
-    <div class="item"><input type="checkbox" data-k="d2" checked><span><b>Login Firebase</b><small>email/password, registrazione, guest, Google (editor), reset con cooldown 10s→5min</small></span></div>
+    <div class="item"><input type="checkbox" data-k="d2" checked><span><b>Login Firebase</b><small>email/password, registrazione, guest, Google OAuth (pagina brandizzata), reset con cooldown</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ac5" checked><span><b>Verifica email obbligatoria</b><small>register → link → login; non verificato = re-invio + blocco; mail nella lingua del gioco</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ac6" checked><span><b>Elimina account COMPLETO</b><small>re-auth Google → wipe totale: users/leaderboard/queue/matchbox/supportMessages + Auth + prefs</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ac8" checked><span><b>Sito promo</b><small>crewq55.github.io/pungiball-site — landing stile Play Store: logo, screenshot, badge leghe, AgaStudio</small></span></div>
     <div class="item"><input type="checkbox" data-k="d3" checked><span><b>Cloud save</b><small>users/{uid}: monete, personaggi, stat, rank, premi — merge "vince il massimo"</small></span></div>
     <div class="item"><input type="checkbox" data-k="d5" checked><span><b>Bot assistenza</b><small>chat multilingua → ticket su Firebase supportMessages</small></span></div>
-    <div class="item"><input type="checkbox" data-k="d6" checked><span><b>Regole RTDB</b><small>supportMessages, leaderboard, users, system</small></span></div>
-    <div class="item"><input type="checkbox" data-k="d7" checked><span><b>Avviso guest</b><small>reminder registrazione ogni ~2,5 min nel menu</small></span></div>
-    <div class="item"><input type="checkbox" data-k="d4" checked><span><b>Messaggi di sistema</b><small>striscione + posta + regali monete + notifiche + scadenza giorni — programmabili: <code>orastart</code>/<code>datastart</code> partenza, <code>datafine</code>/<code>orafine</code> fine auto, <code>una</code>=una volta sola, <code>nuovi</code>=solo chi non ha fatto il tutorial, piu' striscioni in coda uno dopo l'altro, date ITA+ISO</small></span></div>
-    <div class="item"><input type="checkbox" data-k="b1" checked><span><b>Tasto Back Android</b><small>chiude i pannelli a livelli, annulla ricerca ranked, conferma uscita/abbandono — testato con Esc</small></span></div>
-    <div class="item"><input type="checkbox" data-k="st1" checked><span><b>Pannello impostazioni</b><small>volume musica/effetti, lingua (6), grafica Low/Medio/Alto URP, salva tutto</small></span></div>
-    <div class="item"><input type="checkbox" data-k="ln1" checked><span><b>Traduzione completa + arabo</b><small>testi scena tradotti in automatico, messaggi per lingua (titolo_en…), arabo RTL con Noto Sans Arabic</small></span></div>
-    <div class="item"><input type="checkbox" data-k="ln2" checked><span><b>Traduttore Google messaggi</b><small>banner auto-tradotto + bottone verde TRADUCI nella posta — gratis, campi Firebase per lingua restano prioritari</small></span></div>
-    <div class="item"><input type="checkbox" data-k="bd1" checked><span><b>Notifiche badge</b><small>reward, ranked, event, personaggi, stat LV5, nuovo avatar — rosso/bianco lampeggiante</small></span></div>
-    <div class="item"><input type="checkbox" data-k="iv1" checked><span><b>Intro video avvio</b><small>1123.mp4 fullscreen, 1 volta per avvio, tap-skip, musica/banner bloccati finche' dura</small></span></div>
-    <div class="item"><input type="checkbox" data-k="st2" checked><span><b>Impostazioni avanzate</b><small>notifiche ON/OFF locali (daily+promemoria), vibrazione all'impatto, elimina account Firebase, logout, privacy/terms</small></span></div>
-    <div class="item"><input type="checkbox" data-k="pp1"><span><b>Privacy policy + Terms</b><small>docs/privacy.html + terms.html pushati su GitHub ✅ — manca SOLO Pages attivo (Settings→Pages→main→/docs) → crewq55.github.io/PUNGIBALL/privacy.html</small></span></div>
-    <div class="item"><input type="checkbox" data-k="gh1" checked><span><b>Push su GitHub</b><small>commit 30bce71 su main — tutto il codice + docs/ + questa checklist sul repo crewq55/PUNGIBALL</small></span></div>
-    <div class="item"><input type="checkbox" data-k="ab2" checked><span><b>Fix shader su telefono</b><small>i materiali creati da codice usano modelli in Resources/PBMat (creati da Editor/PBMatSetup) — prima Shader.Find dava null in build = schermo rosa, niente pavimento/sala. REGOLA: mai Shader.Find nuovo, usare PunchBallMachine.Tpl()</small></span></div>
-    <div class="item"><input type="checkbox" data-k="ab3" checked><span><b>Schermi cabinati arcade</b><small>6 mini-giochi pixel-art animati (invasori, labirinto, INSERT COIN, picchiaduro, blocchi, corsa) con scanline e sfarfallio CRT — ArcadeScreens.cs</small></span></div>
-    <div class="item"><input type="checkbox" data-k="ab1" checked><span><b>Build Android funzionante</b><small>manifest con launcher activity (icona+auto-avvio), OpenGL ES3 (fix texture rosa su Mali), pannelli input salgono sopra la tastiera, pulita vecchia UI scena</small></span></div>
-    <div class="item"><input type="checkbox" data-k="lb1" checked><span><b>Classifica Top 20</b><small>podio 1-2-3 (foto+nome+rank) + lista 4-20 con vittorie/sconfitte, tu in oro — dati da /leaderboard su Firebase — premi stagione in PanelPremioDare</small></span></div>
-    <div class="item"><input type="checkbox" data-k="t1" checked><span><b>Pannello torneo</b><small>ButtonVaiTournament → PanelIntroTorneo "COMING SOON" — quando sarà vero: intro spettacolare + bracket</small></span></div>
-    <div class="item"><input type="checkbox" data-k="m1" checked><span><b>Missioni giornaliere + settimanali</b><small>2 schede con reset mezzanotte/lunedì, login fissa in cima, 4 missioni pescate dal pool ogni periodo (1 facile, 2 medie, 1 difficile — seed del giorno → stesse missioni per tutti, mai uguali al periodo prima, obiettivi scalati sul livello (nuovi ×0.25), niente missioni di livello bloccanti), XP calibrate sui forzieri (170/160 e 490/400), XP che volano sulla barra, 6 forzieri a soglia con monete (illuminano/ruotano/esplodono), barre blu/rossa/verde/viola, badge + VAI ai pannelli — Missioni.cs + MissioniPanel.cs</small></span></div>
-    <div class="item"><input type="checkbox" data-k="m2" checked><span><b>Zona bonus nascosta</b><small>1 delle 5 zone di mira è fortunata a ogni pugno (invisibile prima del colpo): +10 punti anche oltre il tetto di livello — flash dorato + scintille + "+10" nel sottotitolo</small></span></div>
-    <div class="item"><input type="checkbox" data-k="m3" checked><span><b>Regole nome</b><small>4-8 caratteri, max 1 simbolo, no spam (3+ ripetizioni), blocklist ~40 parole IT/EN/DE/FR/ES con leetspeak (f4ck) — errore rosso sotto il campo, nome da email sanificato</small></span></div>
-    <div class="item"><input type="checkbox" data-k="m4" checked><span><b>Canvas responsive ovunque</b><small>ScaleWithScreenSize 1440×3088 match .5 sia in menupunch che in SampleScene — HUD e menu si adattano da soli a qualsiasi telefono</small></span></div>
-    <div class="item"><input type="checkbox" data-k="m5" checked><span><b>Materiali personaggi veri</b><small>CharMatSetup: texture diffuse+normal, superficie opaca, capelli alpha-clip — + luci studio a 3 punti sull'anteprima (layer 8 dedicato)</small></span></div>
-    <div class="item"><input type="checkbox" data-k="m6" checked><span><b>Grafica 3 livelli</b><small>Basso/Medio(default)/Alto: ombre, cascades, AA, render scale, luci extra con ombre via reflection URP</small></span></div>
-    <div class="item"><input type="checkbox" data-k="m7" checked><span><b>Fix UI</b><small>pannelli Torneo/Leaderboard riagganciati a ogni scena (sceneLoaded), training non dà più punti rank, retry 401 classifica, testi fuori posto di PanelEvent non mangiano più i click (raycast off)</small></span></div>
+    <div class="item"><input type="checkbox" data-k="d6" checked><span><b>Regole RTDB</b><small>supportMessages, leaderboard, users, system, queue/match/matchbox, bans, reports</small></span></div>
+    <div class="item"><input type="checkbox" data-k="d7" checked><span><b>Avviso guest</b><small>reminder registrazione ogni ~2,5 min → punta a Settings → ButtonGoogleAdd</small></span></div>
+    <div class="item"><input type="checkbox" data-k="d4" checked><span><b>Messaggi di sistema</b><small>striscione + posta + regali monete — programmabili con datastart/orastart/datafine/orafine, una/nuovi, per-lingua — vedi Firebase Ops</small></span></div>
+    <div class="item"><input type="checkbox" data-k="b1" checked><span><b>Tasto Back Android</b><small>chiude pannelli a livelli, annulla ricerca ranked, conferma uscita</small></span></div>
+    <div class="item"><input type="checkbox" data-k="st1" checked><span><b>Impostazioni</b><small>volumi, lingua (6), grafica Low/Med/Alto, notifiche, vibrazione, Google link (solo guest), INFO → sito, versione gioco, elimina account, logout</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ln1" checked><span><b>Traduzione completa + arabo</b><small>testi scena auto-tradotti, messaggi per lingua, arabo RTL Noto Sans</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ln2" checked><span><b>Traduttore Google messaggi</b><small>banner auto-tradotto + bottone TRADUCI nella posta</small></span></div>
+    <div class="item"><input type="checkbox" data-k="bd1" checked><span><b>Notifiche badge</b><small>reward, ranked, event, personaggi, stat LV5, nuovo avatar</small></span></div>
+    <div class="item"><input type="checkbox" data-k="iv1" checked><span><b>Intro video</b><small>1123.mp4 fullscreen, 1 volta per avvio, tap-skip</small></span></div>
+    <div class="item"><input type="checkbox" data-k="pp1" checked><span><b>Privacy + Terms</b><small>docs/privacy.html + terms.html live su Pages ✅</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ab2" checked><span><b>Fix shader telefono</b><small>materiali da Resources/PBMat — REGOLA: mai Shader.Find, usare PunchBallMachine.Tpl()</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ab3" checked><span><b>Schermi cabinati arcade</b><small>6 mini-giochi pixel-art animati con scanline CRT — ArcadeScreens.cs</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ab1" checked><span><b>Build Android funzionante</b><small>manifest launcher, OpenGL ES3, pannelli sopra tastiera</small></span></div>
+    <div class="item"><input type="checkbox" data-k="lb1" checked><span><b>Classifica Top 20</b><small>podio + lista, tu in oro, premi stagione da /premiLeader</small></span></div>
+    <div class="item"><input type="checkbox" data-k="t1" checked><span><b>Pannello torneo</b><small>ButtonVaiTournament → "COMING SOON"</small></span></div>
+    <div class="item"><input type="checkbox" data-k="m1" checked><span><b>Missioni giornaliere + settimanali</b><small>reset mezzanotte/lunedì, 4 missioni seeded dal pool, XP calibrate sui 6 forzieri, badge + VAI</small></span></div>
+    <div class="item"><input type="checkbox" data-k="m2" checked><span><b>Zona bonus nascosta</b><small>1 zona di mira fortunata a pugno: +10 punti oltre il tetto</small></span></div>
+    <div class="item"><input type="checkbox" data-k="m3" checked><span><b>Regole nome</b><small>4-8 char, max 1 simbolo, blocklist ~40 parole con leetspeak</small></span></div>
+    <div class="item"><input type="checkbox" data-k="m4" checked><span><b>Canvas responsive</b><small>ScaleWithScreenSize 1440×3088 — adatto a tutti i telefoni</small></span></div>
+    <div class="item"><input type="checkbox" data-k="m5" checked><span><b>Materiali personaggi veri</b><small>diffuse+normal, luci studio a 3 punti sull'anteprima</small></span></div>
+    <div class="item"><input type="checkbox" data-k="m6" checked><span><b>Grafica 3 livelli</b><small>Basso/Medio/Alto: ombre, cascades, AA, render scale</small></span></div>
+    <div class="item"><input type="checkbox" data-k="m7" checked><span><b>Fix UI vari</b><small>leaderboard pulita al primo render, avviso ranked dentro schermo, banner benvenuto 1 volta sola, badge char spento correttamente</small></span></div>
+    <div class="item"><input type="checkbox" data-k="cl1" checked><span><b>Crash report mini</b><small>CrashLog.cs → exception/error su users/{uid}/crash — leggibili in Firebase Console (vedi Ops)</small></span></div>
   </div>
   <div class="card"><h3>Build & Store</h3>
     <div class="item"><input type="checkbox" data-k="d1" checked><span><b>Keystore di firma</b><small>PunchBallArcade.keystore — alias punchballarcade — 30 anni</small></span></div>
-    <div class="item"><input type="checkbox" data-k="d8" checked><span><b>Build settings</b><small>IL2CPP + ARM64, v0.1.0 — conforme Play</small></span></div>
+    <div class="item"><input type="checkbox" data-k="d8" checked><span><b>Build settings</b><small>IL2CPP + ARM64, v0.1.0 code 1 — conforme Play</small></span></div>
   </div>
 </div>
 
 <!-- ============ DA FARE ============ -->
 <div class="page" id="p-todo">
   <div class="card"><h3>🔴 Bloccanti — per pubblicare</h3>
-    <div class="item"><input type="checkbox" data-k="b2"><span><b>Privacy policy + Data Safety</b> <span class="prio">PRIORITÀ</span><small>push fatto ✅ → attiva GitHub Pages (Settings→Pages→main→/docs) → URL pubblico → poi modulo Data Safety in Play Console</small></span></div>
-    <div class="item"><input type="checkbox" data-k="b3"><span><b>OAuth consent "In produzione"</b><small>Google Cloud → Schermata consenso → Pubblica app</small></span></div>
+    <div class="item"><input type="checkbox" data-k="b2"><span><b>Data Safety</b> <span class="prio">PRIORITÀ</span><small>privacy live ✅ → compilare il modulo in Play Console</small></span></div>
+    <div class="item"><input type="checkbox" data-k="b3"><span><b>OAuth consent "In produzione"</b><small>Google Cloud → Schermata consenso → Pubblica</small></span></div>
     <div class="item"><input type="checkbox" data-k="b4"><span><b>Login Google su device</b> <span class="prio">PRIORITÀ</span><small>loopback solo editor → deep-link o plugin Google Sign-In</small></span></div>
-    <div class="item"><input type="checkbox" data-k="b5"><span><b>Ads SDK (AdMob)</b><small>nessun SDK nel progetto — premio x2 non ancora reale</small></span></div>
-    <div class="item"><input type="checkbox" data-k="b6"><span><b>Account Play Developer</b><small>console.play.google.com — ~25$ una tantum</small></span></div>
-    <div class="item"><input type="checkbox" data-k="b7"><span><b>Build AAB + upload</b><small>App Bundle firmata → Play Console → "Firma app di Google Play"</small></span></div>
+    <div class="item"><input type="checkbox" data-k="b5"><span><b>Ads SDK (AdMob)</b><small>premio x2 non ancora reale</small></span></div>
+    <div class="item"><input type="checkbox" data-k="b6"><span><b>Account Play Developer</b><small>~25$ una tantum + verifica identità</small></span></div>
+    <div class="item"><input type="checkbox" data-k="b7"><span><b>Build AAB + upload</b><small>bundle firmato → Play Console → firma di Google Play</small></span></div>
   </div>
   <div class="card"><h3>🟡 Importanti — qualità</h3>
-    <div class="item"><input type="checkbox" data-k="y1"><span><b>Test su telefono vero</b> <span class="prio y">TEST</span><small>notch/safe area, performance, audio, login</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y2"><span><b>Verifica email</b><small>mail di conferma account (opzionale)</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y4"><span><b>Crash report</b><small>Crashlytics o Android Vitals</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y1"><span><b>Test su telefono vero</b> <span class="prio y">TEST</span><small>notch/safe area, performance, audio, login, sfida amici tra 2 device</small></span></div>
     <div class="item"><input type="checkbox" data-k="y5"><span><b>Testi coach</b><small>overflow lingue lunghe (DE/AR)</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y6"><span><b>Grafica store</b><small>icona, feature graphic, screenshot, descrizione, età</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y7"><span><b>Pacchetto notifiche</b><small>Package Manager → add "com.unity.notifications" → Notifiche.cs lo usa via reflection, nient'altro da fare</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y8"><span><b>Collega guest → account</b><small>un ospite che fa logout perde i progressi — pannello "registrati e salva" per convertirli</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y9" checked><span><b>MISSIONI</b><small>FATTO ✅ sistema completo giornaliere+settimanali con pescata seeded dal pool, XP, 6 forzieri — vedi sezione Fatto</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y10"><span><b>Evento (solo 1)</b><small>dei 4 slot evento ne usiamo UNO: evento a tempo nella cella calendario (es. weekend x2 monete) — testo/timer da Firebase /system</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y11"><span><b>Zona "?" misteriosa</b><small>slot in basso del panel evento — da decidere cosa diventa (idee sotto)</small></span></div>
-  </div>
-  <div class="card"><h3>💡 Idee zona "?" (regali + siluetta)</h3>
-    <div class="item"><input type="checkbox" data-k="i1"><span><b>Mystery Box</b> (consigliata)<small>baule misterioso ogni 24h: monete/EXP/random — raro = personaggio Coming Soon sbloccato in anteprima</small></span></div>
-    <div class="item"><input type="checkbox" data-k="i2"><span><b>Calendario login 7 giorni</b><small>premio crescente ogni giorno consecutivo (100→200→…→baule al 7°) — perdi la streak se salti un giorno</small></span></div>
-    <div class="item"><input type="checkbox" data-k="i3"><span><b>Sfida settimanale</b><small>"Fai 10 PERFECT questa settimana" → super premio — si lega al timer stagione</small></span></div>
-    <div class="item"><input type="checkbox" data-k="i4"><span><b>Ruota fortuna</b><small>spin gratis ogni 4h / extra x2 con ads — premi casuali</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y6"><span><b>Grafica store</b><small>icona 512, feature graphic 1024×500, screenshot, descrizione</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y7"><span><b>Pacchetto notifiche</b><small>Package Manager → "com.unity.notifications" → Notifiche.cs lo usa via reflection</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y8"><span><b>Collega guest → account</b><small>ButtonGoogleAdd in Setting fatto ✅ — verificare il flusso su device</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y10"><span><b>Evento (solo 1)</b><small>evento a tempo nella cella calendario PanelEvent — testo/timer da /system</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y11"><span><b>Zona "?" misteriosa</b><small>slot in basso PanelEvent — idee nel tab Futuro</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y13"><span><b>Pannello Assistenza in Setting</b><small>bot esiste — collegare UI</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y14"><span><b>Achievements ondata 2</b><small>step 2 pronti in ECONOMIA.html</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y16"><span><b>Template email Firebase</b> <span class="prio">BLOCCATO</span><small>brandizzare mail con logo — Firebase blocca edit, da ritentare</small></span></div>
   </div>
 </div>
 
-<!-- ============ PLAY STORE ============ -->
+<!-- ============ FIREBASE OPS ============ -->
+<div class="page" id="p-ops">
+  <div class="card"><h3>📣 Pubblicare un messaggio / striscione / regalo</h3>
+    <ol class="steps">
+      <li>Apri <b>Firebase Console</b> → progetto <code>punchballarcade</code> → <b>Realtime Database</b></li>
+      <li>Vai al nodo <code>system</code> → <code>+</code> → nuova chiave <b>unica</b> (es. <code>ev_natale26</code>)<br>
+        ⚠️ <b>Mai riusare lo stesso id</b>: chi l'ha già visto/riscattato non lo vede più (visto/regalo sono per id)</li>
+      <li>Incolla il JSON (generatore sotto, o template pronti) → <b>Salva</b></li>
+      <li>Fatto: appare da solo alle date scelte — niente app da aggiornare</li>
+    </ol>
+  </div>
+
+  <div class="card"><h3>🧰 Generatore JSON</h3>
+    <div class="frow">
+      <div><label>ID univoco *</label><input id="g-id" placeholder="ev_weekend_x2"></div>
+      <div><label>Tipo</label><select id="g-tipo">
+        <option value="all">all — striscione + posta</option>
+        <option value="banner">banner — solo striscione</option>
+        <option value="msg">msg — solo posta (bottone 🔔)</option>
+      </select></div>
+      <div><label>Ricompensa monete (0 = niente)</label><input id="g-ric" type="number" value="0" min="0"></div>
+    </div>
+    <div class="frow">
+      <div><label>Titolo *</label><input id="g-tit" placeholder="WEEKEND D'ORO"></div>
+      <div style="grid-column: 1/-1"><label>Testo *</label><textarea id="g-txt" placeholder="Monete x2 su tutte le partite fino a domenica!"></textarea></div>
+    </div>
+    <div class="frow">
+      <div><label>Inizio (datastart)</label><input id="g-ds" type="date"></div>
+      <div><label>Ora inizio</label><input id="g-os" type="time" value="00:00"></div>
+      <div><label>Fine (datafine)</label><input id="g-df" type="date"></div>
+      <div><label>Ora fine</label><input id="g-of" type="time" value="23:59"></div>
+    </div>
+    <div class="chk">
+      <label><input type="checkbox" id="g-una"> una — striscione una volta sola in assoluto</label>
+      <label><input type="checkbox" id="g-nuovi"> nuovi — solo chi non ha fatto il tutorial</label>
+      <label><input type="checkbox" id="g-avviso"> avviso — etichetta warning nel lettore</label>
+    </div>
+    <button class="gen" onclick="genJson()">⚡ GENERA JSON</button>
+    <pre class="j" id="g-out">// il JSON apparirà qui — copialo su Firebase → system/{id}</pre>
+  </div>
+
+  <div class="card"><h3>📋 Tutti i campi (riferimento completo)</h3>
+    <table class="f">
+      <tr><th>Campo</th><th>Tipo</th><th>Cosa fa</th></tr>
+      <tr><td><code>titolo</code> *</td><td>testo</td><td>Titolo del messaggio e testo dello striscione</td></tr>
+      <tr><td><code>testo</code> *</td><td>testo</td><td>Corpo nel lettore (pannello posta)</td></tr>
+      <tr><td><code>tipo</code></td><td><code>all</code> / <code>banner</code> / <code>msg</code></td><td>Dove appare: default <code>all</code> = striscione + posta</td></tr>
+      <tr><td><code>data</code> / <code>ora</code></td><td><code>2026-02-14</code> / <code>18:30</code></td><td>Riferimento data (mostrati in posta, base per "giorni")</td></tr>
+      <tr><td><code>datastart</code> / <code>orastart</code></td><td>data / ora</td><td>Da quando parte (default: subito)</td></tr>
+      <tr><td><code>datafine</code> / <code>orafine</code></td><td>data / ora</td><td>Sparisce da solo (default ora: 23:59)</td></tr>
+      <tr><td><code>giorni</code></td><td>numero</td><td>Scade N giorni dopo "data"+"ora" (alternativa a datafine)</td></tr>
+      <tr><td><code>ricompensa</code></td><td>numero</td><td>Monete regalo — bottone RITIRA nel lettore (1 volta per account)</td></tr>
+      <tr><td><code>avviso</code></td><td>true</td><td>Etichetta WARNING nel lettore</td></tr>
+      <tr><td><code>una</code></td><td>true</td><td>Striscione UNA sola volta in assoluto (senza: 2 passaggi per sessione)</td></tr>
+      <tr><td><code>nuovi</code></td><td>true</td><td>Solo account che NON hanno fatto il tutorial</td></tr>
+      <tr><td><code>titolo_en</code> ecc.</td><td>testo</td><td>Versione per lingua: <code>_en _it _de _fr _es _ar</code>. Manca → auto-traduzione + bottone TRADUCI</td></tr>
+    </table>
+    <p><b>Striscione</b>: scorre da destra all'ingresso menu + ripete dopo ~120s (max 2 volte/sessione, salvo <code>una</code>).<br>
+    <b>Posta</b>: pulsante 🔔 del menu → lista messaggi → click apre il lettore.</p>
+  </div>
+
+  <div class="card"><h3>📦 Template pronti</h3>
+    <div class="tpl">
+      <button onclick="tpl('ev_weekend')">🏆 Evento weekend<small>striscione + posta, con date</small></button>
+      <button onclick="tpl('gift_beta')">🎁 Regalo monete<small>solo posta + bottone RITIRA</small></button>
+      <button onclick="tpl('mnt_1')">⚠️ Avviso manutenzione<small>con etichetta warning</small></button>
+      <button onclick="tpl('wel_new')">👶 Solo nuovi player<small>visibile solo ad account freschi</small></button>
+      <button onclick="tpl('ann_1')">📢 Annuncio 1 volta<small>banner, una sola volta</small></button>
+      <button onclick="tpl('ev_season')">🔄 Reset stagione<small>reminder fine leaderboard</small></button>
+    </div>
+    <pre class="j" id="tpl-out">// clicca un template → JSON pronto da copiare</pre>
+  </div>
+
+  <div class="card"><h3>🛠️ Operazioni frequenti</h3>
+    <h4>Cambiare versione (ogni upload Play)</h4>
+    <div class="kv">
+      <b>Unity</b><span>Project Settings → Player → <code>bundleVersion</code> (es. 0.1.0 → 0.2.0) + <code>AndroidBundleVersionCode</code> +1 — il code DEVE crescere a ogni upload o Play rifiuta</span>
+      <b>In gioco</b><span><code>TextVersioneGame</code> in Setting mostra la versione da solo</span>
+    </div>
+    <h4>Premi classifica stagione</h4>
+    <div class="kv"><b>Nodo</b><span><code>premiLeader</code> = <code>{"p1":5000,"p2":3000,"p3":2000,"p4_10":1000,"p11_20":500}</code> — editabili senza aggiornare l'app (manca → default interno)</span></div>
+    <h4>Bannare un cheater</h4>
+    <div class="kv"><b>Nodo</b><span><code>bans/{uid}</code> = <code>true</code> → schermo nero + form appello assistenza. L'uid lo trovi in <code>users/</code> o <code>reports/</code></span></div>
+    <h4>Crash dei giocatori</h4>
+    <div class="kv"><b>Nodo</b><span><code>users/{uid}/crash</code> → lista di <code>{t,m,s,v,d,o,ts}</code>: t = tipo (x exception, e error, a assert), m = messaggio, s = stack, v = versione, d = device, o = OS</span></div>
+    <h4>Ticket assistenza</h4>
+    <div class="kv"><b>Nodo</b><span><code>supportMessages/{uid}</code> → messaggi del bot assistenza per utente</span></div>
+    <h4>Cheat report automatici</h4>
+    <div class="kv"><b>Nodo</b><span><code>reports/{uid}</code> → segnalazioni auto per score ≥2000 impossibili</span></div>
+  </div>
+</div>
+
+<!-- ============ LANCIO PLAY ============ -->
 <div class="page" id="p-play">
-  <div class="card"><h3>⚙️ Impostazioni Unity — PRIMA del primo upload</h3>
-    <div class="item"><input type="checkbox" data-k="s1" checked><span><b>Package name DEFINITIVO</b> <span class="prio">NON CAMBIABILE!</span><small><code>com.crewq55.pungiball</code> ✅ — dopo il primo upload su Play non si può più cambiare, MAI</small></span></div>
-    <div class="item"><input type="checkbox" data-k="s2" checked><span><b>Target SDK aggiornato</b><small>Automatic = il più alto installato — IL2CPP + ARM64 ✅ — Min SDK 26 ✅</small></span></div>
-    <div class="item"><input type="checkbox" data-k="s3"><span><b>Icona app + Splash</b><small>icona gioco nello stor menu Android, splash screen senza Unity logo (o con)</small></span></div>
-    <div class="item"><input type="checkbox" data-k="s4" checked><span><b>Keystore collegato</b><small>PunchBallArcade.keystore ✅ — per i TEST serve solo Development Build (attivo, file Editor/DevBuildAuto.cs)</small></span></div>
-    <div class="item"><input type="checkbox" data-k="s5" checked><span><b>Orientamento Portrait</b><small>bloccato verticale — il gioco non ruota più</small></span></div>
-    <div class="item"><input type="checkbox" data-k="s6" checked><span><b>Scene nel build</b><small>menupunch + scena gioco entrambe abilitate</small></span></div>
+  <div class="card"><h3>⚙️ Unity — prima del primo upload</h3>
+    <div class="item"><input type="checkbox" data-k="s1" checked><span><b>Package name DEFINITIVO</b> <span class="prio">NON CAMBIABILE!</span><small><code>com.crewq55.pungiball</code> ✅ — dopo il primo upload è sigillato per sempre</small></span></div>
+    <div class="item"><input type="checkbox" data-k="s2" checked><span><b>Target SDK</b><small>Automatic = più alto — IL2CPP + ARM64 ✅ — Min SDK 26 ✅</small></span></div>
+    <div class="item"><input type="checkbox" data-k="s3"><span><b>Icona app + Splash</b><small>icona home Android, splash screen</small></span></div>
+    <div class="item"><input type="checkbox" data-k="s4" checked><span><b>Keystore collegato</b><small>per i test basta Development Build ✅</small></span></div>
+    <div class="item"><input type="checkbox" data-k="s5" checked><span><b>Orientamento Portrait</b><small>bloccato verticale ✅</small></span></div>
+    <div class="item"><input type="checkbox" data-k="s6" checked><span><b>Scene nel build</b><small>menupunch + scena gioco ✅</small></span></div>
   </div>
-  <div class="card"><h3>🏪 Play Console — obbligatorio per pubblicare</h3>
-    <div class="item"><input type="checkbox" data-k="c1"><span><b>Account Developer</b> <span class="prio">PRIORITÀ</span><small>play.google.com/console — ~25$ una tantum, verifica identità + documento</small></span></div>
-    <div class="item"><input type="checkbox" data-k="c2"><span><b>Privacy policy URL</b> <span class="prio">PRIORITÀ</span><small>pagina web con la policy (usi Firebase + ads → serve per forza) — la metti in Impostazioni app → Privacy policy</small></span></div>
-    <div class="item"><input type="checkbox" data-k="c3"><span><b>Data safety</b> <span class="prio">PRIORITÀ</span><small>modulo: raccogli email, ID account, cronologia gioco → dici SI dove serve, uso "funzionalità app"</small></span></div>
-    <div class="item"><input type="checkbox" data-k="c4"><span><b>Classificazione contenuti (IARC)</b><small>questionario — gioco = probabilmente PEGI 3 / Everyone</small></span></div>
-    <div class="item"><input type="checkbox" data-k="c5"><span><b>Pubblico di destinazione</b><small>età target — se sotto i 13 anni regole extra (Families policy), meglio 13+</small></span></div>
-    <div class="item"><input type="checkbox" data-k="c6"><span><b>Accesso app</b> <span class="prio">PRIORITÀ</span><small>il gioco richiede login → devi dare ai revisori Google un account demo (email+password di prova) o rifiutano</small></span></div>
-    <div class="item"><input type="checkbox" data-k="c7"><span><b>Dichiarazione pubblicità</b><small>"L'app contiene annunci?" → SI quando arriva AdMob</small></span></div>
-    <div class="item"><input type="checkbox" data-k="c8"><span><b>Eliminazione account</b> <span class="prio">NUOVA REGOLA</span><small>Google richiede modo per cancellare account+dati: bottone in gioco + link web (faremo pannello profilo)</small></span></div>
-    <div class="item"><input type="checkbox" data-k="c9"><span><b>Firma app Google Play</b><small>al primo upload attivala → Google custodisce la chiave vera, la tua diventa "upload key" recuperabile</small></span></div>
+  <div class="card"><h3>🏪 Play Console — obbligatorio</h3>
+    <div class="item"><input type="checkbox" data-k="c1"><span><b>Account Developer</b> <span class="prio">PRIORITÀ</span><small>~25$ + verifica identità — nuovi account personali: 12 tester x 14 giorni obbligatori prima del production</small></span></div>
+    <div class="item"><input type="checkbox" data-k="c2"><span><b>Privacy policy URL</b> <span class="prio">PRIORITÀ</span><small>live ✅ → impostazioni app → Privacy policy</small></span></div>
+    <div class="item"><input type="checkbox" data-k="c3"><span><b>Data safety</b> <span class="prio">PRIORITÀ</span><small>raccogli: email, ID account, cronologia gioco → uso "funzionalità app"</small></span></div>
+    <div class="item"><input type="checkbox" data-k="c4"><span><b>Classificazione IARC</b><small>questionario — probabilmente PEGI 3 / Everyone</small></span></div>
+    <div class="item"><input type="checkbox" data-k="c5"><span><b>Pubblico di destinazione</b><small>13+ consigliato (sotto 13 = Families policy, regole extra)</small></span></div>
+    <div class="item"><input type="checkbox" data-k="c6"><span><b>Account demo revisori</b> <span class="prio">PRIORITÀ</span><small>il gioco richiede login → dai a Google email+password di prova o rifiutano</small></span></div>
+    <div class="item"><input type="checkbox" data-k="c7"><span><b>Dichiarazione pubblicità</b><small>"contiene annunci?" → SI quando arriva AdMob</small></span></div>
+    <div class="item"><input type="checkbox" data-k="c8" checked><span><b>Eliminazione account</b><small>FATTO ✅ in Setting</small></span></div>
+    <div class="item"><input type="checkbox" data-k="c9"><span><b>Firma Google Play</b><small>attivala al primo upload → la tua diventa upload key recuperabile</small></span></div>
+    <div class="item"><input type="checkbox" data-k="c10"><span><b>Google login su device</b> <span class="prio">PRIORITÀ</span><small>loopback solo editor — serve deep-link/plugin. Senza login i revisori non entrano</small></span></div>
   </div>
-  <div class="card"><h3>🖼️ Scheda store (Store listing)</h3>
-    <div class="item"><input type="checkbox" data-k="l1"><span><b>Nome app + descrizione breve</b><small>80 caratteri — "Sferra pugni, sali di rango, diventa il re della sala giochi"</small></span></div>
-    <div class="item"><input type="checkbox" data-k="l2"><span><b>Descrizione completa</b><small>max 4000 caratteri — features, ranked, personaggi</small></span></div>
-    <div class="item"><input type="checkbox" data-k="l3"><span><b>Icona 512×512 PNG</b><small>la versione ad alta ris del logo</small></span></div>
-    <div class="item"><input type="checkbox" data-k="l4"><span><b>Feature graphic 1024×500</b><small>banner orizzontale in cima alla scheda</small></span></div>
-    <div class="item"><input type="checkbox" data-k="l5"><span><b>Screenshot (min 2 telefono)</b><small>gameplay + menu + ranked — anche 7"/10" se vuoi tablet</small></span></div>
-    <div class="item"><input type="checkbox" data-k="l6"><span><b>Email contatto + paesi</b><small>email pubblica scheda + selezione paesi pubblicazione</small></span></div>
+  <div class="card"><h3>🖼️ Scheda store</h3>
+    <div class="item"><input type="checkbox" data-k="l1"><span><b>Nome + descrizione breve</b><small>80 char — "Sferra pugni, sali di rango, diventa il re della sala giochi"</small></span></div>
+    <div class="item"><input type="checkbox" data-k="l2"><span><b>Descrizione completa</b><small>max 4000 char</small></span></div>
+    <div class="item"><input type="checkbox" data-k="l3"><span><b>Icona 512×512</b><small>logo alta ris</small></span></div>
+    <div class="item"><input type="checkbox" data-k="l4"><span><b>Feature graphic 1024×500</b><small>banner scheda</small></span></div>
+    <div class="item"><input type="checkbox" data-k="l5"><span><b>Screenshot</b><small>min 2 — gameplay + menu + ranked</small></span></div>
+    <div class="item"><input type="checkbox" data-k="l6"><span><b>Email contatto + paesi</b><small>email pubblica + selezione paesi</small></span></div>
   </div>
   <div class="card"><h3>🔑 Firebase / Google Cloud</h3>
-    <div class="item"><input type="checkbox" data-k="f1"><span><b>SHA-1 del keystore → Firebase</b> <span class="prio">PRIORITÀ</span><small>project settings → aggiungi fingerprint SHA-1+SHA-256 della tua firma → senza, Google Sign-In su Android NON funziona</small></span></div>
-    <div class="item"><input type="checkbox" data-k="f2"><span><b>OAuth consent → In produzione</b><small>Google Cloud → schermata consenso → Pubblica (o login Google limitato ai tester)</small></span></div>
-    <div class="item"><input type="checkbox" data-k="f3"><span><b>Limiti API key</b><small>Google Cloud → credenziali → restringi la chiave ad Identity Toolkit + RTDB (sicurezza)</small></span></div>
-    <div class="item"><input type="checkbox" data-k="f4"><span><b>Regole RTDB definitive</b><small>users/{uid}, system, supportMessages ok — su <b>leaderboard</b> aggiungi <code>".indexOn": ["p"]</code> (ordina per punti, altrimenti scarica tutto)</small></span></div>
-    <div class="item"><input type="checkbox" data-k="f5"><span><b>Nodo premiLeader</b><small>crea su RTDB: <code>{"p1":5000,"p2":3000,"p3":2000,"p4_10":1000,"p11_20":500}</code> — premi classifica editabili senza aggiornare l'app (manca → default)</small></span></div>
+    <div class="item"><input type="checkbox" data-k="f1"><span><b>SHA-1 keystore → Firebase</b> <span class="prio">PRIORITÀ</span><small>project settings → fingerprint SHA-1+SHA-256 → senza, Google Sign-In Android muore</small></span></div>
+    <div class="item"><input type="checkbox" data-k="f2"><span><b>OAuth consent → produzione</b><small>o login Google limitato ai tester</small></span></div>
+    <div class="item"><input type="checkbox" data-k="f3"><span><b>Limiti API key</b><small>restringi a Identity Toolkit + RTDB</small></span></div>
+    <div class="item"><input type="checkbox" data-k="f4"><span><b>Regole definitive</b><small>leaderboard: aggiungi <code>".indexOn":["p"]</code></small></span></div>
+    <div class="item"><input type="checkbox" data-k="f5"><span><b>Nodo premiLeader</b><small><code>{"p1":5000,"p2":3000,"p3":2000,"p4_10":1000,"p11_20":500}</code></small></span></div>
   </div>
-  <div class="note">⚠️ <b>Ordine consigliato</b>: package name → keystore collegato → build AAB test → privacy policy → account developer → modulo console → upload → firma Google Play → closed testing.</div>
+  <div class="note">⚠️ <b>Ordine consigliato</b>: keystore → AAB test → privacy → account dev → moduli console → upload → firma Play → closed testing (12 tester x 14gg) → production.</div>
 </div>
 
-<!-- ============ PROSSIMI UPDATE ============ -->
-<div class="page" id="p-road">
+<!-- ============ FUTURO ============ -->
+<div class="page" id="p-future">
   <div class="road">
-    <div class="card"><h3>v0.2 — Beta release <span class="badge b-wip">IN CORSO</span></h3>
-      <ul><li>Tutto il bloccante della tab "Da fare"</li><li>Test su device reale</li><li>Closed track su Play Console</li></ul></div>
-    <div class="card"><h3>v0.3 — Ads & monetizzazione <span class="badge b-next">PROSSIMO</span></h3>
-      <ul><li>AdMob rewarded (x2 premi, revive, monete gratis)</li><li>Banner/interstitial dove ha senso</li><li>Offline obbligatorio = no ads = no play</li></ul></div>
-    <div class="card"><h3>v0.4 — Classifica <span class="badge b-wip">IN CORSO</span></h3>
-      <ul><li>UI + sync Firebase fatti ✅</li><li>Distribuzione premi a fine stagione (Cloud Function o manuale)</li><li>Reset stagionale punti + anti-cheat server-side</li></ul></div>
-    <div class="card"><h3>v0.5 — 1v1 Online <span class="badge b-wip">IN CORSO</span></h3>
-      <ul><li>PvP live via RTDB: coda + stanza + turni reali sincronizzati ✅</li><li>Penalita' timeout: miss=0, turno dopo a 15s rosso "PENALIZZAZIONE" (visibile a entrambi), 2 miss = vittoria a tavolino ✅</li>
-      <li>Resume dopo chiusura app (stato dal server) + abbandono = sconfitta ✅</li>
-      <li>Anti-cheat regole RTDB: solo partecipanti, max 2009/colpo, turn-order forzato, miss solo a tempo scaduto, punteggi immutabili ✅</li>
-      <li><code>bans/{uid}</code> + schermo nero + appello assistenza; <code>reports/{uid}</code> auto-segnalazioni score ≥2000 ✅</li>
-      <li>Economia protetta: monete +3000 e rank ±60 per write, aumenti ≥20s (wts) ✅</li>
-      <li>Emoji sincronizzate a fine battaglia: panel 10 emoji, click -> anteprima pop + il nemico la vede live sul suo lato (campi <code>ea/eb</code>, nodo vivo ~45s) ✅ — emoji VIP sbloccabili per livello (oggetto <code>10vip1</code> = serve LV10, lucchetto+avviso+pallino rosso su ButtonEmojiFine) e anche il nemico CPU manda emoji ✅</li>
-      <li>Settings in partita: <code>ButtonSceneSetting</code> visibile solo nel tuo turno -> RITIRATA al posto di LOG OUT, conferma = sconfitta 0 ricompense, nemico vince subito ✅</li>
-      <li>Fix UX: toast ospite accorciato + auto-size (niente fuori schermo), unita' giorni countdown localizzata (era "g" italiano in tutte le lingue) ✅</li>
-      <li>Da testare con 2 account + matchmaking per rango + Cloud Function score server-side (blindatura totale)</li></ul></div>
-    <div class="card"><h3>v0.6+ — Contenuti <span class="badge b-idea">IDEA</span></h3>
-      <ul><li>Nuovi personaggi (slot Coming Soon già pronti)</li><li>Nuove macchine/arene e skin</li><li>Eventi a tempo + missioni giornaliere</li></ul></div>
+    <div class="card"><h3>v0.2 — Beta chiusa <span class="badge b-wip">IN CORSO</span></h3>
+      <ul><li>Tutto il bloccante della tab "Da fare"</li><li>Test su device reale + sfida amici 2 device</li><li>Closed track Play Console</li></ul></div>
+    <div class="card"><h3>v0.3 — Ads <span class="badge b-next">PROSSIMO</span></h3>
+      <ul><li>AdMob rewarded: x2 premi, revive, monete gratis</li><li>Banner/interstitial dove ha senso</li></ul></div>
+    <div class="card"><h3>v0.4 — Stagioni complete <span class="badge b-wip">IN CORSO</span></h3>
+      <ul><li>Distribuzione premi a fine stagione (nodo <code>premiLeader</code> pronto)</li><li>Reset punti automatico + anti-cheat server-side</li></ul></div>
+    <div class="card"><h3>v0.5+ — Contenuti <span class="badge b-idea">ROADMAP</span></h3>
+      <ul><li>2 personaggi Coming Soon (FBX in attesa)</li><li>Achievements ondata 2</li><li>Torneo a bracket</li><li>Zona "?" PanelEvent</li></ul></div>
+  </div>
+
+  <div class="card"><h3>📅 Eventi consigliati (da fare via /system, zero codice)</h3>
+    <table class="f">
+      <tr><th>Quando</th><th>Evento</th><th>Come</th></tr>
+      <tr><td>Ogni weekend</td><td><b>Weekend d'oro</b> — hype monete/punti</td><td>banner con datastart ven + datafine dom</td></tr>
+      <tr><td>Fine stagione (dom)</td><td><b>Reset reminder</b> — "scala i rank!"</td><td>banner 24h prima del lunedì</td></tr>
+      <tr><td>Feste</td><td><b>Regalo stagionale</b> — monete gratis</td><td>msg con ricompensa</td></tr>
+      <tr><td>Nuovo update</td><td><b>Patch notes</b> — cosa è cambiato</td><td>msg con lista novità</td></tr>
+      <tr><td>Nuovo char</td><td><b>Teaser</b> — siluetta "in arrivo"</td><td>banner <code>una</code></td></tr>
+      <tr><td>Problemi server</td><td><b>Manutenzione</b> — avviso</td><td>msg con <code>avviso</code></td></tr>
+    </table>
+    <p>Tutto via Firebase → <code>system/{id}</code> — generatore nel tab Ops. <b>Non serve aggiornare l'app.</b></p>
+  </div>
+
+  <div class="card"><h3>🎁 Beta: cosa dare ai tester</h3>
+    <ul>
+      <li><b>Regalo benvenuto beta</b>: msg <code>beta_gift</code> con <code>ricompensa: 500</code> + testo "grazie per testare" — i tester si sentono premiati</li>
+      <li><b>Cosa chiedere</b>: crash (guardano <code>users/{uid}/crash</code>), notch/UI fuori posto (screenshot), performance menu, login Google, sfida amici</li>
+      <li><b>Cosa NON chiedere</b>: feedback su bilanciamento monetizzazione (troppe poche persone per dati sensati)</li>
+      <li><b>Closed track</b>: Play Console richiede 12 tester opt-in x 14 giorni per account personali nuovi — recluta amici/familiari con un link diretto</li>
+      <li><b>Promemoria tester</b>: messaggio <code>system</code> ogni tanto ("bug trovato? scrivi al bot assistenza") mantiene l'attenzione</li>
+    </ul>
+  </div>
+
+  <div class="card"><h3>🧠 Consigli da professionista</h3>
+    <ul>
+      <li><b>Non lanciare il production finché la beta non è stabile</b> — le prime recensioni negative pesano per sempre sull'algoritmo Play</li>
+      <li><b>KPI da guardare in beta</b>: crash-free sessions, retention D1/D7 (tornano il giorno dopo?), quanti fanno il tutorial → primo match, quanti ritornano in ranked</li>
+      <li><b>Prima del lancio</b>: icona + feature graphic fatte bene valgono più di qualsiasi feature — la scheda store è il tuo "negozio"</li>
+      <li><b>Nodo /system è la tua bacchetta magica</b>: comunichi, regali, annunci, avvisi — senza update. Usalo spesso in beta per testare cosa funziona</li>
+      <li><b>Eventi a tempo creano FOMO</b>: "solo questo weekend" funziona meglio di "sempre disponibile" — il timer spinge a giocare ORA</li>
+      <li><b>Privacy/term/elimina account già fatti</b> = la parte noiosa è coperta — concentrati su gameplay e store page</li>
+    </ul>
   </div>
 </div>
 
@@ -260,51 +422,57 @@
 <div class="page" id="p-ideas">
   <div class="grid">
     <div class="card"><h3>💡 Engagement</h3><ul>
-      <li>Missioni giornaliere (3 pugni perfetti, vinci 3 match…)</li><li>Streak login con premi crescenti</li>
-      <li>Notifiche push (premio pronto, stagione che finisce)</li><li>Ruota fortuna giornaliera</li></ul></div>
+      <li><b>Mystery Box</b> (consigliata per zona "?"): baule ogni 24h — monete/EXP/random, raro = char anteprima</li>
+      <li>Calendario login 7 giorni — premio crescente, streak si perde</li>
+      <li>Sfida settimanale — "10 PERFECT questa settimana" → premio, legata al timer stagione</li>
+      <li>Ruota fortuna — spin ogni 4h / x2 con ads</li></ul></div>
     <div class="card"><h3>💡 Progressione</h3><ul>
-      <li>Nuovi personaggi con statistiche uniche</li><li>Skin/costumi per i char</li>
-      <li>Evoluzione avatar VIP</li><li>Livello maestria per personaggio</li></ul></div>
+      <li>Nuovi personaggi con stat uniche</li><li>Skin/costumi</li>
+      <li>Evoluzione avatar VIP</li><li>Livello maestria per char</li></ul></div>
     <div class="card"><h3>💡 Social</h3><ul>
-      <li>Top 50 settimanale + premi</li><li>Sfida amici (codice sfida)</li>
-      <li>Condividi il record sui social</li><li>Tornei a bracket a tempo</li>
-      <li><b>Evento asincrono (ghost)</b>: sfidi i colpi registrati di giocatori veri — sempre disponibile anche con pochi utenti (deciso: ranked resta live, questo diventa evento)</li></ul></div>
+      <li>Top 50 settimanale + premi</li><li><s>Sfida amici</s> FATTA ✅</li>
+      <li>Condividi record sui social</li><li>Tornei a bracket</li>
+      <li><b>Evento ghost</b>: sfidi colpi registrati di giocatori veri — sempre disponibile anche con pochi utenti</li></ul></div>
     <div class="card"><h3>💡 Monetizzazione</h3><ul>
-      <li>Rewarded ads: x2 premi, revive, monete</li><li>Battle pass stagionale</li>
-      <li>Pacchetto starter scontato</li><li>Rimuovi ads (acquisto unico)</li></ul></div>
+      <li>Rewarded ads: x2, revive, monete</li><li>Battle pass stagionale</li>
+      <li>Pacchetto starter</li><li>Rimuovi ads</li></ul></div>
   </div>
 </div>
 
 <!-- ============ TECNICO ============ -->
 <div class="page" id="p-tech">
   <div class="card"><h3>Firebase</h3>
-    <p>Progetto <code>punchballarcade</code> — RTDB europe-west1. Auth REST (no SDK).<br>
-    Struttura: <code>users/{uid}</code> salvataggi · <code>supportMessages/{uid}</code> ticket ·
-    <code>leaderboard/{week}/{uid}</code> futura classifica · <code>system/{id}</code> messaggi.<br>
-    PvP: <code>queue/{uid}</code> chi cerca · <code>matchbox/{uid}</code> invito match ·
-    <code>match/{a_b}</code> stanza partita (pa0..2/pb0..2: -1 non tirato, 0 miss, &gt;0 punti).<br>
-    Anti-cheat: <code>bans/{uid}</code> ban manuale da console (schermo nero + appello) · <code>reports/{uid}</code> segnalazioni auto.
-    Regole complete in FIREBASE_REGOLE.html.</p></div>
-  <div class="card"><h3>Quota Firebase (piano Spark gratis)</h3>
-    <p><b>10 GB/mese download</b> (~333 MB/giorno) · 1 GB storage · 100 connessioni realtime.<br>
-    Il REST polling NON conta come connessione simultanea → nessun limite pratico di utenti online.<br>
-    ~700 KB a partita (2 giocatori: scan coda + polling match) → <b>~300-500 partite/giorno</b> di budget.<br>
-    Oltre → <b>Blaze</b> (pay-as-you-go): banda ~$1/GB, per volumi piccoli pochi $/mese.<br>
-    Monitora: Console → Uso e fatturazione.</p></div>
-  <div class="card"><h3>Messaggi sistema — formato</h3>
-    <p><code>{ titolo, testo, data, ora, tipo, ricompensa, avviso, giorni }</code><br>
-    <code>tipo</code>: all / banner / msg · <code>ricompensa</code>: monete RITIRA ·
-    <code>giorni</code>: scadenza · <code>avviso</code>: etichetta warning.<br>
-    File pronto: <code>system_export.json</code> → importare su nodo <code>system</code>.</p></div>
+    <div class="kv">
+      <b>Progetto</b><span><code>punchballarcade</code> — RTDB europe-west1 — Auth REST (no SDK)</span>
+      <b>users/{uid}</b><span>salvataggi: monete, personaggi, stat, rank, premi, crash</span>
+      <b>system/{id}</b><span>messaggi: striscione + posta + regali — vedi Firebase Ops</span>
+      <b>leaderboard/{week}/{uid}</b><span>classifica settimanale (reset lunedì)</span>
+      <b>premiLeader</b><span>premi stagione editabili</span>
+      <b>queue/{uid}</b><span>matchmaking: chi cerca (+ campo "cd" per sfide amici)</span>
+      <b>matchbox/{uid}</b><span>invito match trovato</span>
+      <b>match/{a_b}</b><span>stanza: pa0..2/pb0..2 (-1 non tirato, 0 miss), primo, ts turni, ea/eb emoji</span>
+      <b>supportMessages/{uid}</b><span>ticket bot assistenza</span>
+      <b>bans/{uid}</b><span>ban manuale → schermo nero + appello</span>
+      <b>reports/{uid}</b><span>segnalazioni auto score ≥2000</span>
+    </div></div>
+  <div class="card"><h3>Quota Firebase (Spark gratis)</h3>
+    <p><b>10 GB/mese download</b> · 1 GB storage · 100 connessioni realtime.<br>
+    REST polling NON conta come connessione → nessun limite utenti online.<br>
+    ~700 KB a partita → <b>~300-500 partite/giorno</b> di budget. Oltre → Blaze ~$1/GB.</p></div>
   <div class="card"><h3>PlayerPrefs chiave</h3>
-    <p><code>PBMonete, PBName, PBLiv, PBExp, PBChar, PBOwned_*, PBCLv_*, PBUpg_*_*,
-    PBRankPoints, PBRewardNext, PBTutorial, PBSysSeen_*, PBSysClaim_*</code> + sessione <code>PB_Fb*</code></p></div>
+    <p><code>PBMonete, PBName, PBLiv, PBExp, PBChar, PBOwned_*, PBCLv_*, PBUpg_*_*, PBRankPoints, PBTutorial, PBSysSeen_*, PBSysClaim_*</code><br>
+    Ack: <code>PBAckU*, PBAckPerfect, PBAckMoneteUsate, PBAckSfide, PBAckInviti, PBAckTop15</code><br>
+    Match: <code>PBModalita, PBOnline, PBSonoA, PBEnemy*, PBSfidaFlag, PBSfidaMode, PBSfidaInvito</code></p></div>
   <div class="card"><h3>Build</h3>
-    <p>Unity 6000.5.7f1 — IL2CPP ARM64 — minSdk 26 — versione 0.1.0 (code 1)<br>
-    Repo: <code>crewq55/PUNGIBALL</code> su GitHub — keystore in .gitignore ✅</p></div>
+    <p>Unity 6000.5.7f1 — IL2CPP ARM64 — minSdk 26 — <code>bundleVersion 0.1.0</code> / code 1<br>
+    Repo: <code>crewq55/PUNGIBALL</code> — keystore in .gitignore ✅</p></div>
 </div>
 
-<footer>PunchBall Arcade · Beta Hub — le spunte si salvano in questo browser · 📱 da telefono: <code>crewq55.github.io/PUNGIBALL/BETA_CHECKLIST.html</code> (dopo attivazione Pages) · 💡 <a href="IDEE.html" style="color:#ffc531">Bacheca Idee →</a> · 📊 <a href="ECONOMIA.html" style="color:#ffc531">Economia & Progressione →</a></footer>
+<footer>
+  PunchBall Arcade · Command Center — le spunte si salvano in questo browser<br>
+  📱 <code>crewq55.github.io/PUNGIBALL/BETA_CHECKLIST.html</code> ·
+  <a href="IDEE.html">Idee →</a> · <a href="ECONOMIA.html">Economia →</a> · <a href="FIREBASE_REGOLE.html">Regole →</a>
+</footer>
 </div>
 
 <script>
@@ -316,7 +484,8 @@
     document.getElementById('p-' + b.dataset.p).classList.add('on');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
-  const boxes = document.querySelectorAll('input[type=checkbox]');
+
+  const boxes = document.querySelectorAll('input[type=checkbox][data-k]');
   const saved = JSON.parse(localStorage.getItem('pb_beta') || '{}');
   boxes.forEach(b => {
     if (saved[b.dataset.k] !== undefined) b.checked = saved[b.dataset.k];
@@ -333,6 +502,52 @@
     document.getElementById('st-todo').textContent = t - d;
   }
   update();
+
+  // ---------- generatore JSON messaggi ----------
+  const F = id => document.getElementById(id);
+  function genJson(){
+    const o = {};
+    const tit = F('g-tit').value.trim(), txt = F('g-txt').value.trim();
+    if (!tit || !txt) { F('g-out').textContent = '⚠️ titolo e testo obbligatori'; return; }
+    o.titolo = tit; o.testo = txt;
+    const tipo = F('g-tipo').value; if (tipo !== 'all') o.tipo = tipo;
+    const ric = parseInt(F('g-ric').value) || 0; if (ric > 0) o.ricompensa = ric;
+    if (F('g-ds').value) { o.datastart = F('g-ds').value; if (F('g-os').value) o.orastart = F('g-os').value; }
+    if (F('g-df').value) { o.datafine = F('g-df').value; if (F('g-of').value && F('g-of').value !== '23:59') o.orafine = F('g-of').value; }
+    if (F('g-una').checked) o.una = true;
+    if (F('g-nuovi').checked) o.nuovi = true;
+    if (F('g-avviso').checked) o.avviso = true;
+    const id = (F('g-id').value.trim() || 'msg_' + Date.now());
+    F('g-out').innerHTML = '// Firebase → Realtime Database → system → + → chiave "' + esc(id) + '" → incolla:\n'
+      + esc(JSON.stringify(o, null, 2)) + copyBtn('g-out');
+    bindCopy();
+  }
+
+  // ---------- template ----------
+  const TPLS = {
+    ev_weekend: {titolo:'WEEKEND D\'ORO', testo:'Punti e monete x2 su tutte le partite fino a domenica sera!', tipo:'all'},
+    gift_beta:  {titolo:'REGALO PER TE', testo:'Grazie per testare PunchBall! Prendi 500 monete.', tipo:'msg', ricompensa:500},
+    mnt_1:      {titolo:'MANUTENZIONE', testo:'Domani 10:00-12:00 i server saranno offline per aggiornamento. Ci scusiamo per il disagio!', tipo:'all', avviso:true},
+    wel_new:    {titolo:'BENVENUTO FIGHTER', testo:'Benvenuto in PunchBall! Completa il tutorial e ricevi 1000 monete gratis.', tipo:'msg', nuovi:true},
+    ann_1:      {titolo:'NUOVO PERSONAGGIO', testo:'Un nuovo fighter sta arrivando nella sala giochi... resta sintonizzato!', tipo:'banner', una:true},
+    ev_season:  {titolo:'RESET STAGIONE', testo:'La classifica si azzera lunedì! Scala i rank prima che sia troppo tardi.', tipo:'all'}
+  };
+  function tpl(id){ 
+    const o = Object.assign({}, TPLS[id]);
+    F('tpl-out').innerHTML = '// Firebase → system → + → chiave "' + esc(id) + '" → incolla:\n'
+      + esc(JSON.stringify(o, null, 2)) + copyBtn('tpl-out');
+    bindCopy();
+  }
+  function copyBtn(pid){ return '<button class="copy" data-pre="'+pid+'">COPIA</button>'; }
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function bindCopy(){
+    document.querySelectorAll('.copy').forEach(b => b.onclick = () => {
+      const pre = document.getElementById(b.dataset.pre);
+      const txt = pre.innerText.replace(/^\/\/.*\n/, '').replace('COPIA\n','').trim();
+      navigator.clipboard.writeText(txt); b.textContent = '✅ OK';
+      setTimeout(() => b.textContent = 'COPIA', 1500);
+    });
+  }
 </script>
 </body>
 </html>
