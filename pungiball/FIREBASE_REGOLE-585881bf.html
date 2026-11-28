@@ -69,8 +69,9 @@
     },
     "queue": {
       ".read": "auth != null",
+      ".indexOn": ["ts"],
       "$uid": {
-        ".write": "auth != null &amp;&amp; auth.uid == $uid &amp;&amp; !root.child('bans').child(auth.uid).exists()",
+        ".write": "auth != null &amp;&amp; !root.child('bans').child(auth.uid).exists() &amp;&amp; (auth.uid == $uid || (!newData.exists() &amp;&amp; data.exists() &amp;&amp; data.child('ts').isNumber() &amp;&amp; ((!data.hasChild('cd') &amp;&amp; now - data.child('ts').val() &gt; 40000) || (data.hasChild('cd') &amp;&amp; now - data.child('ts').val() &gt; 70000))))",
         ".validate": "newData.child('n').isString() &amp;&amp; newData.child('n').val().length &lt;= 30 &amp;&amp; newData.child('av').isNumber() &amp;&amp; newData.child('avv').isNumber() &amp;&amp; newData.child('ch').isNumber() &amp;&amp; newData.child('lv').isNumber() &amp;&amp; newData.child('rk').isNumber() &amp;&amp; newData.child('ts').isNumber()"
       }
     },
