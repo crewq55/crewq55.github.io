@@ -197,6 +197,9 @@
     <div class="item"><input type="checkbox" data-k="ng1" checked><span><b>Gioco solo online (NetGate)</b><small>ogni azione di rete offline → toast "NESSUNA CONNESSIONE INTERNET" — lingua bloccata in match, niente ranked vs IA</small></span></div>
     <div class="item"><input type="checkbox" data-k="ng2" checked><span><b>Attesa avversario + connessione</b><small>IN ATTESA DELL'AVVERSARIO in handshake rdy + CONNESSIONE PERSA se i poll falliscono — forfait automatico a 2 miss</small></span></div>
     <div class="item"><input type="checkbox" data-k="ng3" checked><span><b>AdsFree 5/24h + MusicaTutorial</b><small>5 ads gratis/24h da 50 monete con volo moneta + traccia tutorial dedicata con fade out</small></span></div>
+    <div class="item"><input type="checkbox" data-k="mm1" checked><span><b>Matchmaking scalabile + fascia rank</b><small>coda O(1) orderBy+limitToFirst(15), backoff a coda vuota, cleanup fantasmi — fascia ±1 lega, master↔platino 20%</small></span></div>
+    <div class="item"><input type="checkbox" data-k="mm2" checked><span><b>Interstitial ogni 5-6 match</b><small>a fine partita prima del risultato, anche ranked — mai 2 spot di fila (salta l'ads del perdente)</small></span></div>
+    <div class="item"><input type="checkbox" data-k="av1" checked><span><b>Avatar a regole (AvatarRules)</b><small>AvatarVip{lv}, AvatarVip{Lega}, AvatarRank{n} settimanale rotante, suffissi Girl/Uomo — riblocco automatico della selezione</small></span></div>
     <div class="item"><input type="checkbox" data-k="ab2" checked><span><b>Fix shader telefono</b><small>materiali da Resources/PBMat — REGOLA: mai Shader.Find, usare PunchBallMachine.Tpl()</small></span></div>
     <div class="item"><input type="checkbox" data-k="ab3" checked><span><b>Schermi cabinati arcade</b><small>6 mini-giochi pixel-art animati con scanline CRT — ArcadeScreens.cs</small></span></div>
     <div class="item"><input type="checkbox" data-k="ab1" checked><span><b>Build Android funzionante</b><small>manifest launcher, OpenGL ES3, pannelli sopra tastiera</small></span></div>
@@ -367,7 +370,7 @@
     <div class="item"><input type="checkbox" data-k="f1"><span><b>SHA-1 keystore → Firebase</b> <span class="prio">PRIORITÀ</span><small>project settings → fingerprint SHA-1+SHA-256 → senza, Google Sign-In Android muore</small></span></div>
     <div class="item"><input type="checkbox" data-k="f2"><span><b>OAuth consent → produzione</b><small>o login Google limitato ai tester</small></span></div>
     <div class="item"><input type="checkbox" data-k="f3"><span><b>Limiti API key</b><small>restringi a Identity Toolkit + RTDB</small></span></div>
-    <div class="item"><input type="checkbox" data-k="f4"><span><b>Regole definitive</b><small>leaderboard: aggiungi <code>".indexOn":["p"]</code></small></span></div>
+    <div class="item"><input type="checkbox" data-k="f4"><span><b>Regole definitive</b><small>RE-INCOLLA l'ultima versione (FIREBASE_REGOLE): ora ha <code>queue .indexOn ts</code> + delete scaduti + <code>rankHi/sesso</code> in users; leaderboard: aggiungi <code>".indexOn":["p"]</code></small></span></div>
     <div class="item"><input type="checkbox" data-k="f5"><span><b>Nodo premiLeader</b><small><code>{"p1":5000,"p2":3000,"p3":2000,"p4_10":1000,"p11_20":500}</code></small></span></div>
   </div>
   <div class="note">⚠️ <b>Ordine consigliato</b>: keystore → AAB test → privacy → account dev → moduli console → upload → firma Play → closed testing (12 tester x 14gg) → production.</div>
@@ -453,19 +456,21 @@
       <b>system/{id}</b><span>messaggi: striscione + posta + regali — vedi Firebase Ops</span>
       <b>leaderboard/{week}/{uid}</b><span>classifica settimanale (reset lunedì)</span>
       <b>premiLeader</b><span>premi stagione editabili</span>
-      <b>queue/{uid}</b><span>matchmaking: chi cerca (+ campo "cd" per sfide amici)</span>
+      <b>queue/{uid}</b><span>matchmaking: chi cerca (+ "cd" sfide amici) — <code>.indexOn ts</code>, delete scaduti &gt;40s/</code>70s</span>
       <b>matchbox/{uid}</b><span>invito match trovato</span>
       <b>match/{a_b}</b><span>stanza: pa0..2/pb0..2 (-1 non tirato, 0 miss), primo, ts turni, ea/eb emoji</span>
       <b>supportMessages/{uid}</b><span>ticket bot assistenza</span>
       <b>bans/{uid}</b><span>ban manuale → schermo nero + appello</span>
       <b>reports/{uid}</b><span>segnalazioni auto score ≥2000</span>
     </div></div>
-  <div class="card"><h3>Quota Firebase (Spark gratis)</h3>
+  <div class="card"><h3>Quota Firebase (Spark gratis) — post-ottimizzazione</h3>
     <p><b>10 GB/mese download</b> · 1 GB storage · 100 connessioni realtime.<br>
-    REST polling NON conta come connessione → nessun limite utenti online.<br>
-    ~700 KB a partita → <b>~300-500 partite/giorno</b> di budget. Oltre → Blaze ~$1/GB.</p></div>
+    REST polling: solo richieste in volo contano → nessun cap utenti registrati.<br>
+    <b>Coda O(1)</b>: orderBy+limitToFirst(15) + backoff → regge migliaia di cercatori (era ~20 max prima).<br>
+    ~0.5 MB a partita → <b>~10-20k partite/mese</b> (~400-600/giorno) · match simultanei ~200-400.<br>
+    <b>Se si satura</b>: upgrade Blaze in Console = <b>immediato</b> (~$0-2/mese a questa scala) + budget alert.</p></div>
   <div class="card"><h3>PlayerPrefs chiave</h3>
-    <p><code>PBMonete, PBName, PBLiv, PBExp, PBChar, PBOwned_*, PBCLv_*, PBUpg_*_*, PBRankPoints, PBTutorial, PBSysSeen_*, PBSysClaim_*</code><br>
+    <p><code>PBMonete, PBName, PBLiv, PBExp, PBChar, PBOwned_*, PBCLv_*, PBUpg_*_*, PBRankPoints, PBRankHi, PBSesso, PBWeekPos(W), PBInter_*, PBTutorial, PBSysSeen_*, PBSysClaim_*</code><br>
     Ack: <code>PBAckU*, PBAckPerfect, PBAckMoneteUsate, PBAckSfide, PBAckInviti, PBAckTop15</code><br>
     Match: <code>PBModalita, PBOnline, PBSonoA, PBEnemy*, PBSfidaFlag, PBSfidaMode, PBSfidaInvito</code></p></div>
   <div class="card"><h3>Build</h3>
