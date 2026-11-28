@@ -370,7 +370,7 @@
     <div class="item"><input type="checkbox" data-k="f1"><span><b>SHA-1 keystore → Firebase</b> <span class="prio">PRIORITÀ</span><small>project settings → fingerprint SHA-1+SHA-256 → senza, Google Sign-In Android muore</small></span></div>
     <div class="item"><input type="checkbox" data-k="f2"><span><b>OAuth consent → produzione</b><small>o login Google limitato ai tester</small></span></div>
     <div class="item"><input type="checkbox" data-k="f3"><span><b>Limiti API key</b><small>restringi a Identity Toolkit + RTDB</small></span></div>
-    <div class="item"><input type="checkbox" data-k="f4"><span><b>Regole definitive</b><small>RE-INCOLLA l'ultima versione (FIREBASE_REGOLE): ora ha <code>queue .indexOn ts</code> + delete scaduti + <code>rankHi/sesso</code> in users; leaderboard: aggiungi <code>".indexOn":["p"]</code></small></span></div>
+    <div class="item"><input type="checkbox" data-k="f4" checked><span><b>Regole definitive</b><small>PUBBLICATE ✅ — <code>queue .indexOn ts</code> + delete scaduti + <code>leaderboard .indexOn p</code> + guard <code>rankHi/sesso</code> in users (file puro: pungiball/firebase_rules.json)</small></span></div>
     <div class="item"><input type="checkbox" data-k="f5"><span><b>Nodo premiLeader</b><small><code>{"p1":5000,"p2":3000,"p3":2000,"p4_10":1000,"p11_20":500}</code></small></span></div>
   </div>
   <div class="note">⚠️ <b>Ordine consigliato</b>: keystore → AAB test → privacy → account dev → moduli console → upload → firma Play → closed testing (12 tester x 14gg) → production.</div>
