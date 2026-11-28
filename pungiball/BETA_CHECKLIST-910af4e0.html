@@ -194,6 +194,9 @@
     <div class="item"><input type="checkbox" data-k="bd1" checked><span><b>Notifiche badge</b><small>reward, ranked, event, personaggi, stat LV5, nuovo avatar</small></span></div>
     <div class="item"><input type="checkbox" data-k="iv1" checked><span><b>Intro video</b><small>1123.mp4 fullscreen, 1 volta per avvio, tap-skip</small></span></div>
     <div class="item"><input type="checkbox" data-k="pp1" checked><span><b>Privacy + Terms</b><small>docs/privacy.html + terms.html live su Pages ✅</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ng1" checked><span><b>Gioco solo online (NetGate)</b><small>ogni azione di rete offline → toast "NESSUNA CONNESSIONE INTERNET" — lingua bloccata in match, niente ranked vs IA</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ng2" checked><span><b>Attesa avversario + connessione</b><small>IN ATTESA DELL'AVVERSARIO in handshake rdy + CONNESSIONE PERSA se i poll falliscono — forfait automatico a 2 miss</small></span></div>
+    <div class="item"><input type="checkbox" data-k="ng3" checked><span><b>AdsFree 5/24h + MusicaTutorial</b><small>5 ads gratis/24h da 50 monete con volo moneta + traccia tutorial dedicata con fade out</small></span></div>
     <div class="item"><input type="checkbox" data-k="ab2" checked><span><b>Fix shader telefono</b><small>materiali da Resources/PBMat — REGOLA: mai Shader.Find, usare PunchBallMachine.Tpl()</small></span></div>
     <div class="item"><input type="checkbox" data-k="ab3" checked><span><b>Schermi cabinati arcade</b><small>6 mini-giochi pixel-art animati con scanline CRT — ArcadeScreens.cs</small></span></div>
     <div class="item"><input type="checkbox" data-k="ab1" checked><span><b>Build Android funzionante</b><small>manifest launcher, OpenGL ES3, pannelli sopra tastiera</small></span></div>
@@ -220,16 +223,16 @@
     <div class="item"><input type="checkbox" data-k="b2"><span><b>Data Safety</b> <span class="prio">PRIORITÀ</span><small>privacy live ✅ → compilare il modulo in Play Console</small></span></div>
     <div class="item"><input type="checkbox" data-k="b3"><span><b>OAuth consent "In produzione"</b><small>Google Cloud → Schermata consenso → Pubblica</small></span></div>
     <div class="item"><input type="checkbox" data-k="b4"><span><b>Login Google su device</b> <span class="prio">PRIORITÀ</span><small>loopback solo editor → deep-link o plugin Google Sign-In</small></span></div>
-    <div class="item"><input type="checkbox" data-k="b5"><span><b>Ads SDK (AdMob)</b><small>premio x2 non ancora reale</small></span></div>
+    <div class="item"><input type="checkbox" data-k="b5"><span><b>Ads SDK (AdMob)</b><small>account AdMob in verifica (duplicato IT→MA da chiudere) — AdsFree già simula il premio, SDK all'ultimo passo</small></span></div>
     <div class="item"><input type="checkbox" data-k="b6"><span><b>Account Play Developer</b><small>~25$ una tantum + verifica identità</small></span></div>
     <div class="item"><input type="checkbox" data-k="b7"><span><b>Build AAB + upload</b><small>bundle firmato → Play Console → firma di Google Play</small></span></div>
   </div>
   <div class="card"><h3>🟡 Importanti — qualità</h3>
     <div class="item"><input type="checkbox" data-k="y1"><span><b>Test su telefono vero</b> <span class="prio y">TEST</span><small>notch/safe area, performance, audio, login, sfida amici tra 2 device</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y5"><span><b>Testi coach</b><small>overflow lingue lunghe (DE/AR)</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y5" checked><span><b>Testi coach</b><small>overflow lingue lunghe (DE/AR) — sistemato</small></span></div>
     <div class="item"><input type="checkbox" data-k="y6"><span><b>Grafica store</b><small>icona 512, feature graphic 1024×500, screenshot, descrizione</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y7"><span><b>Pacchetto notifiche</b><small>Package Manager → "com.unity.notifications" → Notifiche.cs lo usa via reflection</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y8"><span><b>Collega guest → account</b><small>ButtonGoogleAdd in Setting fatto ✅ — verificare il flusso su device</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y7" checked><span><b>Pacchetto notifiche</b><small>com.unity.notifications 2.0.2 nel manifest ✅ — Notifiche.cs lo rileva via reflection</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y8" checked><span><b>Collega guest → account</b><small>ButtonGoogleAdd in Setting + avviso guest punta a Settings ✅ (login Google su device = voce b4)</small></span></div>
     <div class="item"><input type="checkbox" data-k="y10"><span><b>Evento (solo 1)</b><small>evento a tempo nella cella calendario PanelEvent — testo/timer da /system</small></span></div>
     <div class="item"><input type="checkbox" data-k="y11"><span><b>Zona "?" misteriosa</b><small>slot in basso PanelEvent — idee nel tab Futuro</small></span></div>
     <div class="item"><input type="checkbox" data-k="y13"><span><b>Pannello Assistenza in Setting</b><small>bot esiste — collegare UI</small></span></div>
