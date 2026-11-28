@@ -191,7 +191,7 @@
     <div class="item"><input type="checkbox" data-k="st1" checked><span><b>Impostazioni</b><small>volumi, lingua (6), grafica Low/Med/Alto, notifiche, vibrazione, Google link (solo guest), INFO → sito, versione gioco, elimina account, logout</small></span></div>
     <div class="item"><input type="checkbox" data-k="ln1" checked><span><b>Traduzione completa + arabo</b><small>testi scena auto-tradotti, messaggi per lingua, arabo RTL Noto Sans</small></span></div>
     <div class="item"><input type="checkbox" data-k="ln2" checked><span><b>Traduttore Google messaggi</b><small>banner auto-tradotto + bottone TRADUCI nella posta</small></span></div>
-    <div class="item"><input type="checkbox" data-k="bd1" checked><span><b>Notifiche badge</b><small>reward, ranked, event, personaggi, stat LV5, nuovo avatar</small></span></div>
+    <div class="item"><input type="checkbox" data-k="bd1" checked><span><b>Notifiche badge</b><small>reward, ranked, event, personaggi, stat LV5, nuovo avatar sbloccato (qualsiasi gate: lv/lega/top/missione)</small></span></div>
     <div class="item"><input type="checkbox" data-k="iv1" checked><span><b>Intro video</b><small>1123.mp4 fullscreen, 1 volta per avvio, tap-skip</small></span></div>
     <div class="item"><input type="checkbox" data-k="pp1" checked><span><b>Privacy + Terms</b><small>docs/privacy.html + terms.html live su Pages ✅</small></span></div>
     <div class="item"><input type="checkbox" data-k="ng1" checked><span><b>Gioco solo online (NetGate)</b><small>ogni azione di rete offline → toast "NESSUNA CONNESSIONE INTERNET" — lingua bloccata in match, niente ranked vs IA</small></span></div>
@@ -199,7 +199,9 @@
     <div class="item"><input type="checkbox" data-k="ng3" checked><span><b>AdsFree 5/24h + MusicaTutorial</b><small>5 ads gratis/24h da 50 monete con volo moneta + traccia tutorial dedicata con fade out</small></span></div>
     <div class="item"><input type="checkbox" data-k="mm1" checked><span><b>Matchmaking scalabile + fascia rank</b><small>coda O(1) orderBy+limitToFirst(15), backoff a coda vuota, cleanup fantasmi — fascia ±1 lega, master↔platino 20%</small></span></div>
     <div class="item"><input type="checkbox" data-k="mm2" checked><span><b>Interstitial ogni 5-6 match</b><small>a fine partita prima del risultato, anche ranked — mai 2 spot di fila (salta l'ads del perdente)</small></span></div>
-    <div class="item"><input type="checkbox" data-k="av1" checked><span><b>Avatar a regole (AvatarRules)</b><small>AvatarVip{lv}, AvatarVip{Lega}, AvatarRank{n} settimanale rotante, suffissi Girl/Uomo — riblocco automatico della selezione</small></span></div>
+    <div class="item"><input type="checkbox" data-k="av1" checked><span><b>Avatar a regole (AvatarRules)</b><small>AvatarVip{lv} + alias Avatar{n}Vip, AvatarVip{Lega} (max storico), AvatarRank{n} settimanale rotante, AvatarMission{n} permanente, suffissi Girl/Uomo — lucchetto + requisito nel report, riblocco automatico</small></span></div>
+    <div class="item"><input type="checkbox" data-k="av2" checked><span><b>Griglia avatar automatica 4×N</b><small>slot clonati e disposti dal codice (misura il pannello) — righe in base al numero di avatar, niente lavoro in scena</small></span></div>
+    <div class="item"><input type="checkbox" data-k="av3" checked><span><b>AvatarMission1 = ricompensa rankwin settimanale</b><small>foto a tutto cerchio al posto della moneta XP sulla missione "vinci ranked" (ultima) — sblocco permanente; dopo il claim la riga torna XP</small></span></div>
     <div class="item"><input type="checkbox" data-k="ab2" checked><span><b>Fix shader telefono</b><small>materiali da Resources/PBMat — REGOLA: mai Shader.Find, usare PunchBallMachine.Tpl()</small></span></div>
     <div class="item"><input type="checkbox" data-k="ab3" checked><span><b>Schermi cabinati arcade</b><small>6 mini-giochi pixel-art animati con scanline CRT — ArcadeScreens.cs</small></span></div>
     <div class="item"><input type="checkbox" data-k="ab1" checked><span><b>Build Android funzionante</b><small>manifest launcher, OpenGL ES3, pannelli sopra tastiera</small></span></div>
@@ -234,7 +236,7 @@
     <div class="item"><input type="checkbox" data-k="y1"><span><b>Test su telefono vero</b> <span class="prio y">TEST</span><small>notch/safe area, performance, audio, login, sfida amici tra 2 device</small></span></div>
     <div class="item"><input type="checkbox" data-k="y5" checked><span><b>Testi coach</b><small>overflow lingue lunghe (DE/AR) — sistemato</small></span></div>
     <div class="item"><input type="checkbox" data-k="y6"><span><b>Grafica store</b><small>icona 512, feature graphic 1024×500, screenshot, descrizione</small></span></div>
-    <div class="item"><input type="checkbox" data-k="y7" checked><span><b>Pacchetto notifiche</b><small>com.unity.notifications 2.0.2 nel manifest ✅ — Notifiche.cs lo rileva via reflection</small></span></div>
+    <div class="item"><input type="checkbox" data-k="y7" checked><span><b>Pacchetto notifiche</b><small>com.unity.mobile.notifications 2.4.3 nel manifest ✅ — Notifiche.cs lo rileva via reflection</small></span></div>
     <div class="item"><input type="checkbox" data-k="y8" checked><span><b>Collega guest → account</b><small>ButtonGoogleAdd in Setting + avviso guest punta a Settings ✅ (login Google su device = voce b4)</small></span></div>
     <div class="item"><input type="checkbox" data-k="y10"><span><b>Evento (solo 1)</b><small>evento a tempo nella cella calendario PanelEvent — testo/timer da /system</small></span></div>
     <div class="item"><input type="checkbox" data-k="y11"><span><b>Zona "?" misteriosa</b><small>slot in basso PanelEvent — idee nel tab Futuro</small></span></div>
